@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import LandingPage3d from "../../../../app/3d/page";
 import LandingPage from "../../../../app/page";
 import { ProductSignalCard } from "../VisualPrimitives";
@@ -9,17 +9,14 @@ vi.mock("next/navigation", () => ({
   redirect: vi.fn(),
 }));
 
+beforeEach(async () => {
+  const { redirect } = await import("next/navigation");
+  vi.mocked(redirect).mockClear();
+});
+
 describe("LandingPage", () => {
-  it("redirects the root route to the canonical 3D page", async () => {
-    const { redirect } = await import("next/navigation");
-
-    LandingPage();
-
-    expect(redirect).toHaveBeenCalledWith("/3d");
-  });
-
-  it("renders the 3D globe hero on the direct route", () => {
-    render(React.createElement(LandingPage3d));
+  it("renders the 3D globe hero as the root page", () => {
+    render(React.createElement(LandingPage));
 
     expect(screen.getByRole("heading", { name: /Expand into SEA markets faster with done for you bank connectivity/i })).toBeInTheDocument();
     expect(screen.getByText("Proposal for Revolut")).toBeInTheDocument();
@@ -40,17 +37,16 @@ describe("LandingPage", () => {
     expect(screen.getByRole("heading", { name: "See the Singapore launch path" })).toBeInTheDocument();
   });
 
-  it("keeps the direct 3D route focused on the same globe hero", () => {
-    render(React.createElement(LandingPage3d));
+  it("redirects the legacy 3D route to the canonical root page", async () => {
+    const { redirect } = await import("next/navigation");
 
-    expect(screen.getByRole("heading", { name: /Expand into SEA markets faster with done for you bank connectivity/i })).toBeInTheDocument();
-    expect(screen.getByText("Proposal for Revolut")).toBeInTheDocument();
-    expect(screen.getByText("acme")).toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "Get started" })).not.toBeInTheDocument();
+    LandingPage3d();
+
+    expect(redirect).toHaveBeenCalledWith("/");
   });
 
   it("keeps post-hero typography on the same semantic scale as the hero", () => {
-    render(React.createElement(LandingPage3d));
+    render(React.createElement(LandingPage));
 
     const sectionHeading = screen.getByRole("heading", { name: "What Revolut can launch faster." });
     const sectionCopy = screen.getByText(
@@ -65,7 +61,7 @@ describe("LandingPage", () => {
   });
 
   it("keeps post-hero proof cards dense after the normalized type scale", () => {
-    render(React.createElement(LandingPage3d));
+    render(React.createElement(LandingPage));
 
     const card = screen.getByRole("heading", { name: "Named virtual accounts" }).closest("article");
 

@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import { AcmeDemoPage } from "@/components/landing/AcmeDemoPage";
 
 export default function LandingPage() {
-  redirect("/3d");
+  return <AcmeDemoPage />;
 }
