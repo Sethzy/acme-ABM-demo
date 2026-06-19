@@ -64,6 +64,7 @@ describe("LandingPage", () => {
       join(process.cwd(), "src/components/globe/landTexture.ts"),
       "utf8",
     );
+    const css = readFileSync(join(process.cwd(), "src/design/landing.css"), "utf8");
 
     expect(hero).toContain("hero-globe-frame");
     expect(hero).toContain("GlobeCanvas");
@@ -75,6 +76,9 @@ describe("LandingPage", () => {
     expect(landTexture).toContain("@/generated/globe-land-dots");
     expect(scene).not.toContain("fetch(");
     expect(landTexture).not.toContain("normalizeCountries");
+    expect(css).toMatch(/\.hero-reveal-layer\s*\{\s*opacity:\s*0;/);
+    expect(css).toContain(".landing-shell:has(.hero-globe-canvas.is-ready) .hero-reveal-layer");
+    expect(css).not.toContain(".landing-shell:not(:has(.hero-globe-canvas.is-ready)) .hero-reveal-layer");
   });
 
   it("keeps the proposal badge optically balanced with extra right padding", () => {
