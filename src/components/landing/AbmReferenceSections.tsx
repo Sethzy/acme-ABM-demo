@@ -103,15 +103,7 @@ export function AbmReferenceSections() {
               className="abm-card border-b border-[color-mix(in_srgb,var(--color-faded-grid-blue)_52%,var(--color-steel-gray))] px-8 py-9 last:border-b-0 sm:px-10 sm:py-10 md:[&:nth-child(2n)]:border-r-0 md:border-r lg:border-b-0 lg:px-9 lg:[&:nth-child(2n)]:border-r lg:last:border-r-0 xl:px-10"
             >
               <h3 className="abm-card-title max-w-[13ch]">{card.title}</h3>
-              <p
-                className={`abm-card-copy ${
-                  card.title === "Statements and reconciliation"
-                    ? "abm-card-copy-balanced"
-                    : ""
-                }`}
-              >
-                {card.body}
-              </p>
+              <p className="abm-card-copy">{card.body}</p>
             </article>
           ))}
         </div>

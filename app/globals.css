@@ -430,10 +430,6 @@ a {
   margin-top: 0.875rem;
 }
 
-.abm-card-copy-balanced {
-  text-wrap: balance;
-}
-
 .abm-eyebrow {
   color: color-mix(in srgb, var(--color-ink-blue) 42%, var(--color-slate-text));
   font-size: 0.875rem;
