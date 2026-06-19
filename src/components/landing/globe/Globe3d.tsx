@@ -12,39 +12,14 @@ import {
   resetRouteClock,
   type RouteTiming,
 } from "./routeVisibility";
-
-type Position = [number, number];
-
-type CountryGeometry =
-  | {
-      type: "Polygon";
-      coordinates: Position[][];
-    }
-  | {
-      type: "MultiPolygon";
-      coordinates: Position[][][];
-    };
-
-type CountriesGeo = {
-  type: "FeatureCollection";
-  features: Array<{
-    type: "Feature";
-    geometry: CountryGeometry | null;
-    properties: Record<string, unknown>;
-  }>;
-};
-
-type Bounds = {
-  minLng: number;
-  maxLng: number;
-  minLat: number;
-  maxLat: number;
-};
-
-type LandPolygon = {
-  rings: Position[][];
-  bounds: Bounds;
-};
+import {
+  createLandDotAttributes,
+  createLandDotMaterial,
+  latLngToVector,
+  normalizeCountries,
+  type CountriesGeo,
+  type LandPolygon,
+} from "./landTexture";
 
 type ArcStyle = {
   color: string;
@@ -66,14 +41,10 @@ type RouteDraw = RouteTiming & {
   opacityRatio: number;
 };
 
-const DEG = Math.PI / 180;
 const GLOBE_RADIUS = 1;
-const DOT_RADIUS = 1.0006;
 const ARC_RADIUS = 1.008;
 const MARKER_RADIUS = 1.012;
 const CAMERA_Z = 4.3;
-const LAND_LAT_STEP = 1.05;
-const LAND_LNG_STEP = 1.08;
 const BASE_GROUP_ROTATION = {
   x: -0.1,
   y: 0.56,
@@ -81,8 +52,6 @@ const BASE_GROUP_ROTATION = {
 };
 
 const INK_COLOR = new THREE.Color("#123653");
-const DOT_COLOR = new THREE.Color("#012436");
-const DOT_LIFT_COLOR = new THREE.Color("#013f47");
 const OCEAN_COLOR = new THREE.Color("#fbfaf6");
 const OCEAN_EMISSIVE_COLOR = new THREE.Color("#dfeeea");
 const ATMOSPHERE_COLOR = new THREE.Color("#a8cad7");
@@ -117,107 +86,6 @@ function getCorridorStyle(corridor: Corridor) {
   return TONE_STYLES[corridor.tone ?? "quiet"];
 }
 
-function normalizeCountries(countries: CountriesGeo): LandPolygon[] {
-  const polygons: LandPolygon[] = [];
-
-  for (const feature of countries.features) {
-    const geometry = feature.geometry;
-    if (!geometry) continue;
-
-    if (geometry.type === "Polygon") {
-      addPolygon(polygons, geometry.coordinates);
-      continue;
-    }
-
-    for (const polygon of geometry.coordinates) {
-      addPolygon(polygons, polygon);
-    }
-  }
-
-  return polygons;
-}
-
-function addPolygon(polygons: LandPolygon[], rings: Position[][]) {
-  const exterior = rings[0];
-  if (!exterior?.length) return;
-
-  polygons.push({
-    rings,
-    bounds: getBounds(exterior),
-  });
-}
-
-function getBounds(ring: Position[]): Bounds {
-  let minLng = Infinity;
-  let maxLng = -Infinity;
-  let minLat = Infinity;
-  let maxLat = -Infinity;
-
-  for (const [lng, lat] of ring) {
-    minLng = Math.min(minLng, lng);
-    maxLng = Math.max(maxLng, lng);
-    minLat = Math.min(minLat, lat);
-    maxLat = Math.max(maxLat, lat);
-  }
-
-  return { minLng, maxLng, minLat, maxLat };
-}
-
-function pointInRing(lng: number, lat: number, ring: Position[]) {
-  let inside = false;
-
-  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-    const [lngI, latI] = ring[i];
-    const [lngJ, latJ] = ring[j];
-    const crosses = latI > lat !== latJ > lat;
-
-    if (!crosses) continue;
-
-    const projectedLng =
-      ((lngJ - lngI) * (lat - latI)) / (latJ - latI + Number.EPSILON) + lngI;
-
-    if (lng < projectedLng) inside = !inside;
-  }
-
-  return inside;
-}
-
-function isLand(lng: number, lat: number, polygons: LandPolygon[]) {
-  for (const polygon of polygons) {
-    const { bounds, rings } = polygon;
-    if (
-      lng < bounds.minLng ||
-      lng > bounds.maxLng ||
-      lat < bounds.minLat ||
-      lat > bounds.maxLat
-    ) {
-      continue;
-    }
-
-    if (!pointInRing(lng, lat, rings[0])) continue;
-
-    for (let i = 1; i < rings.length; i += 1) {
-      if (pointInRing(lng, lat, rings[i])) return false;
-    }
-
-    return true;
-  }
-
-  return false;
-}
-
-function latLngToVector(lat: number, lng: number, radius = GLOBE_RADIUS) {
-  const latRad = lat * DEG;
-  const lngRad = lng * DEG;
-  const cosLat = Math.cos(latRad);
-
-  return new THREE.Vector3(
-    radius * cosLat * Math.cos(lngRad),
-    radius * Math.sin(latRad),
-    radius * cosLat * Math.sin(lngRad),
-  );
-}
-
 function slerpUnitVectors(start: THREE.Vector3, end: THREE.Vector3, t: number) {
   const dot = THREE.MathUtils.clamp(start.dot(end), -1, 1);
   const theta = Math.acos(dot) * t;
@@ -230,37 +98,6 @@ function slerpUnitVectors(start: THREE.Vector3, end: THREE.Vector3, t: number) {
     .clone()
     .multiplyScalar(Math.cos(theta))
     .add(relative.multiplyScalar(Math.sin(theta)));
-}
-
-function createLandDots(polygons: LandPolygon[]) {
-  const positions: number[] = [];
-  const colors: number[] = [];
-  let row = 0;
-
-  for (let lat = -83.6; lat <= 83.6; lat += LAND_LAT_STEP) {
-    const cosLat = Math.max(Math.cos(lat * DEG), 0.16);
-    const count = Math.max(20, Math.round((360 / LAND_LNG_STEP) * cosLat));
-    const offset = row % 2 === 0 ? 0 : 0.5;
-
-    for (let index = 0; index < count; index += 1) {
-      const lng = -180 + ((index + offset) / count) * 360;
-      if (!isLand(lng, lat, polygons)) continue;
-
-      const point = latLngToVector(lat, lng, DOT_RADIUS);
-      positions.push(point.x, point.y, point.z);
-
-      const regionalTint = Math.max(0, Math.sin((lat + 12) * DEG)) * 0.12;
-      const color = DOT_COLOR.clone().lerp(DOT_LIFT_COLOR, regionalTint);
-      colors.push(color.r, color.g, color.b);
-    }
-
-    row += 1;
-  }
-
-  return {
-    positions: new Float32Array(positions),
-    colors: new Float32Array(colors),
-  };
 }
 
 function createGlobeShell() {
@@ -313,24 +150,13 @@ function createGlobeShell() {
   return group;
 }
 
-function createDotsMesh(polygons: LandPolygon[]) {
-  const { positions, colors } = createLandDots(polygons);
+function createDotsMesh(polygons: LandPolygon[], viewportHeight: number) {
+  const { positions, colors } = createLandDotAttributes(polygons);
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
   geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
-  return new THREE.Points(
-    geometry,
-    new THREE.PointsMaterial({
-      size: 0.0098,
-      sizeAttenuation: true,
-      vertexColors: true,
-      transparent: true,
-      opacity: 1,
-      depthTest: true,
-      depthWrite: false,
-    }),
-  );
+  return new THREE.Points(geometry, createLandDotMaterial(viewportHeight));
 }
 
 function makeArcCurve(corridor: Corridor, style: ArcStyle) {
@@ -631,7 +457,7 @@ export default function Globe3d({ width, height }: { width: number; height: numb
       BASE_GROUP_ROTATION.z,
     );
 
-    const dots = createDotsMesh(landPolygons);
+    const dots = createDotsMesh(landPolygons, height * renderer.getPixelRatio());
     globeGroup.add(dots);
 
     const routeGroup = new THREE.Group();
