@@ -1,0 +1,50 @@
+.hero-stage {
+  min-height: 100dvh;
+  background:
+    radial-gradient(circle at 82% 12%, color-mix(in srgb, var(--color-info-blue) 11%, transparent), transparent 24rem),
+    radial-gradient(circle at 18% 4%, color-mix(in srgb, var(--color-action-orange) 7%, transparent), transparent 20rem),
+    linear-gradient(180deg, oklch(0.988 0.006 220) 0%, oklch(0.985 0.006 220) 78%, oklch(0.985 0.006 220) 100%);
+}
+
+.hero-blueprint-layer {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    radial-gradient(circle, color-mix(in srgb, var(--color-faded-grid-blue) 10%, transparent) 0 1px, transparent 1.25px),
+    linear-gradient(color-mix(in srgb, var(--color-steel-gray) 38%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-steel-gray) 32%, transparent) 1px, transparent 1px);
+  background-position: center top;
+  background-size: 18px 18px, 96px 96px, 96px 96px;
+  mask-image: linear-gradient(to bottom, black 0%, black 72%, transparent 100%);
+}
+
+.hero-corner-marks {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--color-deep-plum) 18%, transparent) 0 1px, transparent 1px) 40px 94px / 210px 1px no-repeat,
+    linear-gradient(180deg, color-mix(in srgb, var(--color-deep-plum) 18%, transparent) 0 1px, transparent 1px) 40px 94px / 1px 150px no-repeat,
+    linear-gradient(90deg, color-mix(in srgb, var(--color-action-orange) 28%, transparent) 0 1px, transparent 1px) calc(100% - 250px) calc(100% - 70px) / 210px 1px no-repeat,
+    linear-gradient(180deg, color-mix(in srgb, var(--color-action-orange) 28%, transparent) 0 1px, transparent 1px) calc(100% - 40px) calc(100% - 220px) / 1px 150px no-repeat;
+  opacity: 0.85;
+}
+
+.abm-reference-shell {
+  background:
+    radial-gradient(circle at 74% 6%, color-mix(in srgb, var(--color-info-blue) 5%, transparent), transparent 28rem),
+    linear-gradient(180deg, oklch(0.985 0.006 220) 0%, oklch(0.982 0.006 224) 42%, oklch(0.985 0.006 220) 100%);
+}
+
+.abm-reference-blueprint {
+  mask-image: linear-gradient(to bottom, transparent 0%, black 7rem, black calc(100% - 12rem), transparent 100%);
+}
+
+@media (max-width: 639px) {
+  .hero-corner-marks {
+    opacity: 0.45;
+  }
+}

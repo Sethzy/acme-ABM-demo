@@ -1,0 +1,8 @@
+.next/
+node_modules/
+coverage/
+*.tsbuildinfo
+.vercel/
+.vercel.v2.lnk/
+.env*
+public/reference/
