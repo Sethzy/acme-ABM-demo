@@ -76,11 +76,11 @@ export function AbmReferenceSections() {
           titleClassName="abm-section-title-compact"
         />
 
-        <div className="abm-process-grid mt-[70px] grid overflow-hidden border border-[color-mix(in_srgb,var(--color-faded-grid-blue)_58%,var(--color-steel-gray))] bg-[color-mix(in_srgb,var(--color-ghost-white)_94%,var(--color-fog-gray))] shadow-[0_28px_80px_-70px_rgba(1,24,33,0.45)] lg:grid-cols-3">
+        <div className="abm-card-grid abm-card-grid-3 abm-process-grid mt-[70px]">
           {platformCards.map((card) => (
             <article
               key={card.title}
-              className="abm-card abm-card-with-rule abm-process-card border-b border-[color-mix(in_srgb,var(--color-faded-grid-blue)_52%,var(--color-steel-gray))] px-9 py-10 last:border-b-0 sm:px-11 sm:py-11 lg:border-b-0 lg:border-r lg:px-10 lg:last:border-r-0 xl:px-11"
+              className="abm-card abm-card-cell abm-card-with-rule abm-process-card px-9 py-10 sm:px-11 sm:py-11 lg:px-10 xl:px-11"
             >
               <div className="abm-process-meta" aria-hidden="true">
                 <span className="abm-process-index">{card.step}</span>
@@ -100,11 +100,11 @@ export function AbmReferenceSections() {
           body="Singapore workflows that get easier when bank relationships, rails, and implementation detail are already mapped."
         />
 
-        <div className="mt-[74px] grid overflow-hidden border border-[color-mix(in_srgb,var(--color-faded-grid-blue)_58%,var(--color-steel-gray))] bg-[color-mix(in_srgb,var(--color-ghost-white)_94%,var(--color-fog-gray))] shadow-[0_28px_80px_-70px_rgba(1,24,33,0.45)] md:grid-cols-2 lg:grid-cols-4">
+        <div className="abm-card-grid abm-card-grid-4 mt-[74px]">
           {shipCards.map((card) => (
             <article
               key={card.title}
-              className="abm-card border-b border-[color-mix(in_srgb,var(--color-faded-grid-blue)_52%,var(--color-steel-gray))] px-8 py-9 last:border-b-0 sm:px-10 sm:py-10 md:[&:nth-child(2n)]:border-r-0 md:border-r lg:border-b-0 lg:px-9 lg:[&:nth-child(2n)]:border-r lg:last:border-r-0 xl:px-10"
+              className="abm-card abm-card-cell px-8 py-9 sm:px-10 sm:py-10 lg:px-9 xl:px-10"
             >
               <h3 className="abm-card-title max-w-[13ch]">{card.title}</h3>
               <p className="abm-card-copy">{card.body}</p>

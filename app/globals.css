@@ -431,6 +431,23 @@ a {
   min-height: 15.5rem;
 }
 
+.abm-card-grid {
+  --abm-card-rule: color-mix(in srgb, var(--color-faded-grid-blue) 30%, var(--color-steel-gray));
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--abm-card-rule);
+  background: color-mix(in srgb, var(--color-ghost-white) 94%, var(--color-fog-gray));
+  box-shadow: 0 28px 80px -70px rgba(1, 24, 33, 0.45);
+}
+
+.abm-card-cell {
+  border-bottom: 1px solid var(--abm-card-rule);
+}
+
+.abm-card-cell:last-child {
+  border-bottom: 0;
+}
+
 .abm-card-with-rule {
   min-height: 16rem;
 }
@@ -684,6 +701,39 @@ a {
     min-height: 31rem;
   }
 
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .abm-card-grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .abm-card-grid-4 > .abm-card-cell:nth-child(odd) {
+    border-right: 1px solid var(--abm-card-rule);
+  }
+
+  .abm-card-grid-4 > .abm-card-cell:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .abm-card-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .abm-card-grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .abm-card-grid > .abm-card-cell {
+    border-right: 1px solid var(--abm-card-rule);
+    border-bottom: 0;
+  }
+
+  .abm-card-grid > .abm-card-cell:last-child {
+    border-right: 0;
+  }
 }
 
 @media (min-width: 1536px) {
