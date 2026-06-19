@@ -28,10 +28,13 @@ export function GlobeVisual() {
   return (
     <div
       ref={containerRef}
-      className="relative h-[25rem] w-full sm:h-[31rem] lg:h-[38rem] xl:h-[42rem]"
+      className="hero-globe-frame relative h-[25rem] w-full sm:h-[31rem] lg:h-[38rem] xl:h-[42rem]"
       aria-hidden="true"
     >
       <div className="hero-globe-halo" aria-hidden="true" />
+      <div className="hero-globe-placeholder" aria-hidden="true">
+        <div className="hero-globe-placeholder-texture" />
+      </div>
       {size ? (
         <div className="absolute inset-0">
           <Globe3d width={size.w} height={size.h} />

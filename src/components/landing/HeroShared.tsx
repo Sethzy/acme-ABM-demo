@@ -37,7 +37,7 @@ function HeroNarrative({ variant }: { variant: "map" | "globe" }) {
         {kicker.code ? (
           <span className="hero-kicker-code">{kicker.code}</span>
         ) : (
-          <span className="hero-kicker-logo" aria-hidden="true">
+          <span className="hero-kicker-logo" data-fallback="R" aria-hidden="true">
             <Image src="/logos/revolut.webp" alt="" width={34} height={34} priority />
           </span>
         )}

@@ -37,6 +37,13 @@ describe("LandingPage", () => {
     expect(screen.getByRole("heading", { name: "See the Singapore launch path" })).toBeInTheDocument();
   });
 
+  it("keeps the first paint visually close to the hydrated globe hero", () => {
+    render(React.createElement(LandingPage));
+
+    expect(document.querySelector(".hero-globe-placeholder")).toBeInTheDocument();
+    expect(document.querySelector(".hero-kicker-logo")).toHaveAttribute("data-fallback", "R");
+  });
+
   it("redirects the legacy 3D route to the canonical root page", async () => {
     const { redirect } = await import("next/navigation");
 
