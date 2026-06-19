@@ -121,7 +121,7 @@ body {
   background:
     radial-gradient(circle at 82% 12%, color-mix(in srgb, var(--color-info-blue) 11%, transparent), transparent 24rem),
     radial-gradient(circle at 18% 4%, color-mix(in srgb, var(--color-action-orange) 7%, transparent), transparent 20rem),
-    linear-gradient(180deg, oklch(0.988 0.006 220) 0%, oklch(0.974 0.007 230) 100%);
+    linear-gradient(180deg, oklch(0.988 0.006 220) 0%, oklch(0.985 0.006 220) 78%, oklch(0.985 0.006 220) 100%);
 }
 
 .hero-blueprint-layer {
@@ -376,12 +376,26 @@ a {
   letter-spacing: var(--tracking-display);
 }
 
+.abm-reference-shell {
+  background:
+    radial-gradient(circle at 74% 6%, color-mix(in srgb, var(--color-info-blue) 5%, transparent), transparent 28rem),
+    linear-gradient(180deg, oklch(0.985 0.006 220) 0%, oklch(0.982 0.006 224) 42%, oklch(0.985 0.006 220) 100%);
+}
+
+.abm-reference-blueprint {
+  mask-image: linear-gradient(to bottom, transparent 0%, black 7rem, black calc(100% - 12rem), transparent 100%);
+}
+
 .abm-section-title {
   color: var(--color-ink-blue);
   font-size: clamp(3rem, 4.4vw, 3.75rem);
   font-weight: 300;
   letter-spacing: 0;
   line-height: 1.08;
+}
+
+.abm-section-title-compact {
+  font-size: clamp(2.75rem, 3.8vw, 3.35rem);
 }
 
 .abm-contact-title {
@@ -419,6 +433,42 @@ a {
 
 .abm-card-with-rule {
   min-height: 16rem;
+}
+
+.abm-process-grid {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-ghost-white) 98%, transparent), color-mix(in srgb, var(--color-ghost-white) 90%, var(--color-fog-gray))),
+    color-mix(in srgb, var(--color-ghost-white) 94%, var(--color-fog-gray));
+}
+
+.abm-process-card {
+  min-height: 16.75rem;
+}
+
+.abm-process-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 1.65rem;
+  color: color-mix(in srgb, var(--color-faded-grid-blue) 72%, var(--color-slate-text));
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.abm-process-index {
+  display: inline-flex;
+  min-width: 2.15rem;
+  height: 1.65rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--color-faded-grid-blue) 38%, var(--color-steel-gray));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-info-blue) 8%, var(--color-ghost-white));
+  color: color-mix(in srgb, var(--color-deep-plum) 78%, var(--color-faded-grid-blue));
 }
 
 .abm-card-copy {
