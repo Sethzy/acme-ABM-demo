@@ -1,13 +1,25 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import LandingPage3d from "../../../../app/3d/page";
 import LandingPage from "../../../../app/page";
 import { ProductSignalCard } from "../VisualPrimitives";
 
+vi.mock("next/navigation", () => ({
+  redirect: vi.fn(),
+}));
+
 describe("LandingPage", () => {
-  it("renders the 3D globe hero as the default landing page", () => {
-    render(React.createElement(LandingPage));
+  it("redirects the root route to the canonical 3D page", async () => {
+    const { redirect } = await import("next/navigation");
+
+    LandingPage();
+
+    expect(redirect).toHaveBeenCalledWith("/3d");
+  });
+
+  it("renders the 3D globe hero on the direct route", () => {
+    render(React.createElement(LandingPage3d));
 
     expect(screen.getByRole("heading", { name: /Expand into SEA markets faster with done for you bank connectivity/i })).toBeInTheDocument();
     expect(screen.getByText("Proposal for Revolut")).toBeInTheDocument();
@@ -23,7 +35,7 @@ describe("LandingPage", () => {
     expect(screen.queryByText("API-first")).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Map hero" })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "3D globe" })).not.toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Singapore bank relationships, ready for integration." })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Start from existing SEA bank coverage." })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "What Revolut can launch faster." })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "See the Singapore launch path" })).toBeInTheDocument();
   });
