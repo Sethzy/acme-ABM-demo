@@ -37,10 +37,35 @@ describe("LandingPage", () => {
     expect(screen.getByRole("heading", { name: "See the Singapore launch path" })).toBeInTheDocument();
   });
 
-  it("keeps the first paint visually close to the hydrated globe hero", () => {
+  it("locks the hero headline into explicit first-paint lines", () => {
     render(React.createElement(LandingPage));
 
-    expect(document.querySelector(".hero-globe-placeholder")).toBeInTheDocument();
+    const heading = screen.getByRole("heading", {
+      name: "Expand into SEA markets faster with done for you bank connectivity",
+    });
+    const lines = Array.from(heading.querySelectorAll(".hero-title-line")).map((line) =>
+      line.textContent?.trim(),
+    );
+
+    expect(lines).toEqual([
+      "Expand into",
+      "SEA markets",
+      "faster with done",
+      "for you bank",
+      "connectivity",
+    ]);
+    expect(heading.className).not.toContain("text-balance");
+    expect(heading.className).not.toContain("ch");
+  });
+
+  it("uses a static globe poster for the first paint instead of a CSS placeholder", () => {
+    render(React.createElement(LandingPage));
+
+    expect(document.querySelector(".hero-globe-poster")).toHaveAttribute(
+      "data-poster-src",
+      "/globe/globe-initial-poster.webp",
+    );
+    expect(document.querySelector(".hero-globe-placeholder")).not.toBeInTheDocument();
     expect(document.querySelector(".hero-kicker-logo")).toHaveAttribute("data-fallback", "R");
   });
 

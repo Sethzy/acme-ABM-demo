@@ -2,6 +2,14 @@ import Image from "next/image";
 import { acmeContent } from "@/content/acme";
 import { ActionLink } from "./VisualPrimitives";
 
+const globeHeadlineLines = [
+  "Expand into",
+  "SEA markets",
+  "faster with done",
+  "for you bank",
+  "connectivity",
+];
+
 export function HeroShell({
   children,
   variant,
@@ -43,8 +51,15 @@ function HeroNarrative({ variant }: { variant: "map" | "globe" }) {
         )}
         <span>{kicker.label}</span>
       </div>
-      <h1 className="mt-7 max-w-[15.5ch] text-balance text-[48px] font-light leading-[1.08] tracking-normal text-[var(--color-ink-blue)] sm:max-w-[19ch] sm:text-[60px] lg:text-[60px]">
-        {acmeContent.hero.headline}
+      <h1
+        aria-label={acmeContent.hero.headline}
+        className="mt-7 text-[48px] font-light leading-[1.08] tracking-normal text-[var(--color-ink-blue)] sm:text-[60px] lg:text-[60px]"
+      >
+        {(variant === "globe" ? globeHeadlineLines : [acmeContent.hero.headline]).map((line) => (
+          <span key={line} className="hero-title-line block" aria-hidden={variant === "globe" ? "true" : undefined}>
+            {line}
+          </span>
+        ))}
       </h1>
       <p className="mt-6 max-w-[35rem] text-[18px] font-normal leading-[1.43] tracking-normal text-[color-mix(in_srgb,var(--color-ink-blue)_80%,var(--color-slate-text))] sm:text-[20px] sm:leading-[1.38]">
         {acmeContent.hero.subhead}

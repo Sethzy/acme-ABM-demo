@@ -375,12 +375,21 @@ function disposeObject(object: THREE.Object3D) {
   });
 }
 
-export default function Globe3d({ width, height }: { width: number; height: number }) {
+export default function Globe3d({
+  width,
+  height,
+  onReady,
+}: {
+  width: number;
+  height: number;
+  onReady?: () => void;
+}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const reduceMotionRef = useRef(false);
+  const onReadyRef = useRef(onReady);
   const [countries, setCountries] = useState<CountriesGeo | null>(null);
   const [isRevealed, setIsRevealed] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
@@ -412,6 +421,10 @@ export default function Globe3d({ width, height }: { width: number; height: numb
   useEffect(() => {
     reduceMotionRef.current = reduceMotion;
   }, [reduceMotion]);
+
+  useEffect(() => {
+    onReadyRef.current = onReady;
+  }, [onReady]);
 
   useEffect(() => {
     const renderer = rendererRef.current;
@@ -541,10 +554,6 @@ export default function Globe3d({ width, height }: { width: number; height: numb
       setRouteLayerOpacity(routeGroup, routeDraws, 1);
     }
 
-    const revealFrame = window.requestAnimationFrame(() => {
-      secondFrame = window.requestAnimationFrame(() => setIsRevealed(true));
-    });
-
     const animate = () => {
       const now = performance.now() / 1000;
       const delta = Math.min(0.05, Math.max(0, now - lastFrameAt));
@@ -587,7 +596,16 @@ export default function Globe3d({ width, height }: { width: number; height: numb
       frame = window.requestAnimationFrame(animate);
     };
 
-    animate();
+    renderer.render(scene, camera);
+
+    const revealFrame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(() => {
+        setIsRevealed(true);
+        onReadyRef.current?.();
+        lastFrameAt = performance.now() / 1000;
+        frame = window.requestAnimationFrame(animate);
+      });
+    });
 
     return () => {
       window.cancelAnimationFrame(frame);
