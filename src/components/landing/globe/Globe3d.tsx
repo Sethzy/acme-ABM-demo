@@ -50,6 +50,7 @@ const BASE_GROUP_ROTATION = {
   y: 0.56,
   z: -0.045,
 };
+const REVEAL_WARMUP_FRAMES = 8;
 
 const INK_COLOR = new THREE.Color("#123653");
 const OCEAN_COLOR = new THREE.Color("#fbfaf6");
@@ -485,11 +486,7 @@ export default function Globe3d({
       routeGroup.add(createMarkerMesh(marker));
     }
     updateRouteDraws(routeDraws, 0);
-    setRouteLayerOpacity(
-      routeGroup,
-      routeDraws,
-      getRouteGate(getAnchorFrontness(globeGroup, cities.singapore)).alpha,
-    );
+    setRouteLayerOpacity(routeGroup, routeDraws, 0);
     globeGroup.add(routeGroup);
 
     const limbMatte = new THREE.Mesh(
@@ -543,16 +540,36 @@ export default function Globe3d({
     cameraRef.current = camera;
 
     let frame = 0;
-    let secondFrame = 0;
     let lastFrameAt = performance.now() / 1000;
     let routeClock = 0;
     let routeAlpha = getRouteGate(getAnchorFrontness(globeGroup, cities.singapore)).alpha;
     let wasReducedMotion = reduceMotionRef.current;
+    let hasRevealed = false;
+    let routeAnimationStarted = false;
+    let warmupFrames = 0;
 
     if (wasReducedMotion) {
       showReducedMotionRoute(routeDraws);
-      setRouteLayerOpacity(routeGroup, routeDraws, 1);
+      setRouteLayerOpacity(routeGroup, routeDraws, 0);
     }
+
+    const revealGlobe = () => {
+      if (hasRevealed) return;
+
+      hasRevealed = true;
+      routeAnimationStarted = true;
+      routeClock = 0;
+
+      if (reduceMotionRef.current) {
+        showReducedMotionRoute(routeDraws);
+      } else {
+        resetRouteDraws(routeDraws);
+      }
+
+      setIsRevealed(true);
+      onReadyRef.current?.();
+      lastFrameAt = performance.now() / 1000;
+    };
 
     const animate = () => {
       const now = performance.now() / 1000;
@@ -567,7 +584,7 @@ export default function Globe3d({
           wasReducedMotion = true;
         }
 
-        setRouteLayerOpacity(routeGroup, routeDraws, 1);
+        setRouteLayerOpacity(routeGroup, routeDraws, hasRevealed ? 1 : 0);
       } else {
         if (wasReducedMotion) {
           routeClock = 0;
@@ -581,7 +598,9 @@ export default function Globe3d({
         const gate = getRouteGate(getAnchorFrontness(globeGroup, cities.singapore));
         routeAlpha = approachRouteAlpha(routeAlpha, gate.alpha, delta);
 
-        if (gate.isOpen) {
+        if (!routeAnimationStarted) {
+          resetRouteDraws(routeDraws);
+        } else if (gate.isOpen) {
           routeClock += delta;
           updateRouteDraws(routeDraws, routeClock);
         } else {
@@ -589,28 +608,26 @@ export default function Globe3d({
           if (routeClock === 0) resetRouteDraws(routeDraws);
         }
 
-        setRouteLayerOpacity(routeGroup, routeDraws, routeAlpha);
+        setRouteLayerOpacity(routeGroup, routeDraws, hasRevealed ? routeAlpha : 0);
       }
 
       renderer.render(scene, camera);
+
+      if (!hasRevealed) {
+        warmupFrames += 1;
+        if (warmupFrames >= REVEAL_WARMUP_FRAMES) {
+          revealGlobe();
+        }
+      }
+
       frame = window.requestAnimationFrame(animate);
     };
 
     renderer.render(scene, camera);
-
-    const revealFrame = window.requestAnimationFrame(() => {
-      secondFrame = window.requestAnimationFrame(() => {
-        setIsRevealed(true);
-        onReadyRef.current?.();
-        lastFrameAt = performance.now() / 1000;
-        frame = window.requestAnimationFrame(animate);
-      });
-    });
+    frame = window.requestAnimationFrame(animate);
 
     return () => {
       window.cancelAnimationFrame(frame);
-      window.cancelAnimationFrame(revealFrame);
-      if (secondFrame) window.cancelAnimationFrame(secondFrame);
       disposeObject(scene);
       renderer.dispose();
 

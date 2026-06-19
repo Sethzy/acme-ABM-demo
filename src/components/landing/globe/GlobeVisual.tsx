@@ -1,15 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const Globe3d = dynamic(() => import("./Globe3d"), {
   ssr: false,
   loading: () => null,
 });
-
-const GLOBE_POSTER_SRC = "/globe/globe-initial-poster.webp";
 
 export function GlobeVisual() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -42,15 +39,6 @@ export function GlobeVisual() {
       aria-hidden="true"
     >
       <div className="hero-globe-halo" aria-hidden="true" />
-      <div className="hero-globe-poster" data-poster-src={GLOBE_POSTER_SRC} aria-hidden="true">
-        <Image
-          src={GLOBE_POSTER_SRC}
-          alt=""
-          fill
-          priority
-          sizes="(min-width: 1280px) 672px, (min-width: 1024px) 608px, 82vw"
-        />
-      </div>
       {size ? (
         <div className="absolute inset-0">
           <Globe3d width={size.w} height={size.h} onReady={handleGlobeReady} />

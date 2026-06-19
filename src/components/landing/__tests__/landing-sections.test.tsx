@@ -58,14 +58,13 @@ describe("LandingPage", () => {
     expect(heading.className).not.toContain("ch");
   });
 
-  it("uses a static globe poster for the first paint instead of a CSS placeholder", () => {
+  it("reserves empty globe space for first paint instead of showing a fake globe", () => {
     render(React.createElement(LandingPage));
 
-    expect(document.querySelector(".hero-globe-poster")).toHaveAttribute(
-      "data-poster-src",
-      "/globe/globe-initial-poster.webp",
-    );
+    expect(document.querySelector(".hero-globe-frame")).toBeInTheDocument();
+    expect(document.querySelector(".hero-globe-poster")).not.toBeInTheDocument();
     expect(document.querySelector(".hero-globe-placeholder")).not.toBeInTheDocument();
+    expect(document.documentElement.innerHTML).not.toContain("globe-initial-poster");
     expect(document.querySelector(".hero-kicker-logo")).toHaveAttribute("data-fallback", "R");
   });
 
