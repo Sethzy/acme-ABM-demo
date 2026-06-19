@@ -8,7 +8,7 @@ function Wordmark() {
 
 export function Header() {
   return (
-    <header className="absolute inset-x-0 top-0 z-50 flex h-[86px] items-center bg-transparent">
+    <header className="hero-reveal-layer absolute inset-x-0 top-0 z-50 flex h-[86px] items-center bg-transparent">
       <div className="mx-auto flex h-full w-full max-w-[1200px] items-center px-5 sm:px-8 lg:px-10 xl:px-0">
         <Wordmark />
       </div>

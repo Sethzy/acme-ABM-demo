@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { createGlobeScene, type GlobeSceneController } from "./createGlobeScene";
+import type { GlobeSceneController } from "./createGlobeScene";
 
 const DEFAULT_GLOBE_SIZE = { w: 720, h: 672 };
 
@@ -68,18 +68,31 @@ export function GlobeCanvas() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const scene = createGlobeScene({
-      canvas,
-      width: lastSizeRef.current.w,
-      height: lastSizeRef.current.h,
-      reducedMotion: getReducedMotionPreference(),
-      onReady: () => setIsReady(true),
-    });
-    sceneRef.current = scene;
+    let cancelled = false;
+
+    void import("./createGlobeScene")
+      .then(({ createGlobeScene }) => {
+        if (cancelled) return;
+
+        const scene = createGlobeScene({
+          canvas,
+          width: lastSizeRef.current.w,
+          height: lastSizeRef.current.h,
+          reducedMotion: getReducedMotionPreference(),
+          onReady: () => setIsReady(true),
+        });
+
+        sceneRef.current = scene;
+        if (!scene) setIsReady(true);
+      })
+      .catch(() => {
+        if (!cancelled) setIsReady(true);
+      });
 
     return () => {
-      scene?.destroy();
-      if (sceneRef.current === scene) sceneRef.current = null;
+      cancelled = true;
+      sceneRef.current?.destroy();
+      sceneRef.current = null;
     };
   }, []);
 

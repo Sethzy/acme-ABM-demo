@@ -14,7 +14,7 @@ export function HeroShell({
       <div className="hero-blueprint-layer" aria-hidden="true" />
       <div className="hero-corner-marks" aria-hidden="true" />
       <div className="relative mx-auto flex min-h-[100dvh] w-full max-w-[1200px] flex-col px-5 pb-5 pt-[112px] sm:px-8 sm:pb-7 sm:pt-[116px] lg:px-10 lg:pt-[120px] xl:px-0">
-        <div className="grid flex-1 items-center gap-8 lg:grid-cols-[0.86fr_1.14fr] lg:gap-10 xl:gap-14">
+        <div className="hero-reveal-layer grid flex-1 items-center gap-8 lg:grid-cols-[0.86fr_1.14fr] lg:gap-10 xl:gap-14">
           <HeroNarrative variant={variant} />
           <div className="relative z-10 min-h-[22rem] lg:min-h-[34rem] lg:translate-x-8 lg:-translate-y-[3%] xl:translate-x-12 2xl:translate-x-16">
             {children}
