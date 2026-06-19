@@ -1,0 +1,649 @@
+@import "tailwindcss";
+
+@theme {
+  /* Exact tokens from landing/design-system/theme.css */
+  --color-ink-blue: #011821;
+  --color-code-black: #000000;
+  --color-ghost-white: #ffffff;
+  --color-fog-gray: #f6f6f8;
+  --color-steel-gray: #e3e4e8;
+  --color-charcoal-text: #232730;
+  --color-slate-text: #7c7f88;
+  --color-graphite: #12161;
+  --color-deep-plum: #111a4a;
+  --color-action-orange: #ec652b;
+  --color-soft-horizon-gradient: #d65620;
+  --color-faded-grid-blue: #023247;
+  --color-success-moss: #44b48b;
+  --color-radial-twilight-gradient: #771c86;
+  --color-info-blue: #7ea7e9;
+  --color-callout-cyan: #167e6c;
+  --color-notification-teal: #88deeb;
+  --color-error-red: #c2272d;
+  --font-sans: "SuisseIntl", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "SFMono", "SuisseIntlMono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-suisseintl: "SuisseIntl", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sfmono: "SFMono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-suisseintlmono: "SuisseIntlMono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --text-caption: 10px;
+  --leading-caption: 1.5;
+  --text-body: 14px;
+  --leading-body: 1.5;
+  --tracking-body: -0.28px;
+  --text-subheading: 18px;
+  --leading-subheading: 1.4;
+  --tracking-subheading: -0.36px;
+  --text-heading-sm: 24px;
+  --leading-heading-sm: 1.33;
+  --tracking-heading-sm: -0.48px;
+  --text-heading: 40px;
+  --leading-heading: 1.1;
+  --tracking-heading: -0.8px;
+  --text-display: 48px;
+  --leading-display: 1;
+  --tracking-display: -1.44px;
+  --spacing-4: 4px;
+  --spacing-8: 8px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-20: 20px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-64: 64px;
+  --spacing-72: 72px;
+  --spacing-80: 80px;
+  --spacing-96: 96px;
+  --spacing-100: 100px;
+  --spacing-144: 144px;
+  --radius-sm: 2px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --shadow-subtle: rgba(17, 26, 74, 0.1) 0px 1px 3px 0px, rgba(17, 26, 74, 0.05) 0px 1px 0px 0px, rgba(255, 255, 255, 0.5) 0px 1px 0px 0px inset, rgba(255, 255, 255, 0.5) 0px 1px 4px 0px inset;
+  --shadow-subtle-2: rgba(87, 90, 100, 0.12) 0px 0px 0px 1px;
+  --shadow-subtle-3: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px inset;
+  --shadow-xl: rgba(0, 0, 0, 0.02) 0px 40px 32px 0px, rgba(0, 0, 0, 0.03) 0px 22px 18px 0px, rgba(0, 0, 0, 0.03) 0px 12px 10px 0px, rgba(0, 0, 0, 0.04) 0px 7px 5px 0px, rgba(0, 0, 0, 0.07) 0px 3px 2px 0px;
+  --shadow-sm: rgba(0, 0, 0, 0.05) 0px 4px 8px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(0, 0, 0, 0.1) 0px 1px 1px 0px;
+  --shadow-subtle-4: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px, rgb(255, 255, 255) 0px 0px 0px 1px inset;
+  --shadow-subtle-5: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+}
+
+:root {
+  --site-header-height: 80px;
+  --gradient-soft-horizon-gradient: linear-gradient(125deg, rgb(214, 86, 32) -3.16%, rgb(159, 122, 238) 14.55%, rgb(69, 117, 205) 32.26%, rgb(113, 210, 240) 49.97%, rgb(68, 180, 139) 67.68%, rgb(244, 223, 105) 85.39%);
+  --gradient-radial-twilight-gradient: radial-gradient(29.88% 184.91% at 6.55% -48.11%, rgb(119, 28, 134) 0%, rgb(17, 26, 74) 100%);
+  --color-inverted-copy: #c1e8ef;
+  --color-inverted-muted: color-mix(in srgb, var(--color-inverted-copy) 76%, var(--color-slate-text));
+  --surface-ghost-34: color-mix(in srgb, var(--color-ghost-white) 34%, transparent);
+  --surface-ghost-72: color-mix(in srgb, var(--color-ghost-white) 72%, transparent);
+  --surface-ghost-78: color-mix(in srgb, var(--color-ghost-white) 78%, transparent);
+  --surface-ghost-80: color-mix(in srgb, var(--color-ghost-white) 80%, transparent);
+  --surface-ghost-88: color-mix(in srgb, var(--color-ghost-white) 88%, transparent);
+  --surface-inverted-panel: color-mix(in srgb, var(--color-ink-blue) 90%, var(--color-faded-grid-blue));
+  --surface-inverted-card: color-mix(in srgb, var(--color-ink-blue) 76%, var(--color-faded-grid-blue));
+  --surface-inverted-muted: color-mix(in srgb, var(--color-ghost-white) 4%, transparent);
+  --surface-inverted-header: color-mix(in srgb, var(--color-ghost-white) 3%, transparent);
+  --surface-inverted-gradient-start: color-mix(in srgb, var(--color-ghost-white) 22%, transparent);
+  --surface-inverted-gradient-end: color-mix(in srgb, var(--color-ghost-white) 2%, transparent);
+  --border-inverted-subtle: color-mix(in srgb, var(--color-ghost-white) 10%, transparent);
+  --border-notification-subtle: color-mix(in srgb, var(--color-notification-teal) 20%, transparent);
+  --shadow-inverted-layer: 0 20px 60px color-mix(in srgb, var(--color-code-black) 18%, transparent);
+  background: var(--color-fog-gray);
+  color: var(--color-ink-blue);
+  font-synthesis: none;
+  text-rendering: geometricPrecision;
+  font-feature-settings: "salt" 2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  overflow-x: clip;
+  background:
+    radial-gradient(circle at 20% 0%, color-mix(in srgb, var(--color-info-blue) 10%, transparent), transparent 30rem),
+    var(--color-fog-gray);
+  font-family: var(--font-sans);
+  letter-spacing: var(--tracking-body);
+}
+
+.hero-stage {
+  min-height: 100dvh;
+  background:
+    radial-gradient(circle at 82% 12%, color-mix(in srgb, var(--color-info-blue) 11%, transparent), transparent 24rem),
+    radial-gradient(circle at 18% 4%, color-mix(in srgb, var(--color-action-orange) 7%, transparent), transparent 20rem),
+    linear-gradient(180deg, oklch(0.988 0.006 220) 0%, oklch(0.974 0.007 230) 100%);
+}
+
+.hero-blueprint-layer {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    radial-gradient(circle, color-mix(in srgb, var(--color-faded-grid-blue) 10%, transparent) 0 1px, transparent 1.25px),
+    linear-gradient(color-mix(in srgb, var(--color-steel-gray) 38%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-steel-gray) 32%, transparent) 1px, transparent 1px);
+  background-position: center top;
+  background-size: 18px 18px, 96px 96px, 96px 96px;
+  mask-image: linear-gradient(to bottom, black 0%, black 72%, transparent 100%);
+}
+
+.hero-corner-marks {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--color-deep-plum) 18%, transparent) 0 1px, transparent 1px) 40px 94px / 210px 1px no-repeat,
+    linear-gradient(180deg, color-mix(in srgb, var(--color-deep-plum) 18%, transparent) 0 1px, transparent 1px) 40px 94px / 1px 150px no-repeat,
+    linear-gradient(90deg, color-mix(in srgb, var(--color-action-orange) 28%, transparent) 0 1px, transparent 1px) calc(100% - 250px) calc(100% - 70px) / 210px 1px no-repeat,
+    linear-gradient(180deg, color-mix(in srgb, var(--color-action-orange) 28%, transparent) 0 1px, transparent 1px) calc(100% - 40px) calc(100% - 220px) / 1px 150px no-repeat;
+  opacity: 0.85;
+}
+
+.hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid color-mix(in srgb, var(--color-steel-gray) 72%, var(--color-ghost-white));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-ghost-white) 78%, transparent);
+  box-shadow: 0 12px 30px -26px rgba(17, 26, 74, 0.24), inset 0 1px 0 color-mix(in srgb, var(--color-ghost-white) 86%, transparent);
+  color: color-mix(in srgb, var(--color-deep-plum) 70%, var(--color-slate-text));
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  padding: 6px 10px;
+}
+
+.hero-kicker-code {
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--color-deep-plum) 8%, var(--color-ghost-white));
+  color: var(--color-deep-plum);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0;
+  padding: 3px 6px;
+}
+
+.hero-kicker-logo {
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-steel-gray) 48%, var(--color-ghost-white));
+  border-radius: 7px;
+  background: var(--color-ghost-white);
+}
+
+.hero-kicker-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.35);
+}
+
+.hero-map-scene,
+.hero-globe-scene {
+  position: relative;
+  min-height: 23rem;
+  width: 100%;
+}
+
+.hero-map-field {
+  position: absolute;
+  left: -22%;
+  top: -8%;
+  width: 145%;
+  max-width: none;
+  opacity: 0.95;
+}
+
+.hero-map-panel {
+  position: absolute;
+  right: 0;
+  top: 22%;
+  width: min(100%, 31rem);
+}
+
+.hero-map-coordinates {
+  position: absolute;
+  right: 4%;
+  top: 8%;
+  display: flex;
+  gap: 8px;
+  color: color-mix(in srgb, var(--color-faded-grid-blue) 60%, var(--color-slate-text));
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.hero-panel-grid {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--color-steel-gray) 44%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-steel-gray) 36%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(to bottom, black, transparent 82%);
+}
+
+.hero-globe-scene {
+  min-height: 28rem;
+}
+
+.hero-globe-halo {
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: min(82%, 41rem);
+  height: 72%;
+  translate: -50% -50%;
+  border-radius: 999px;
+  background:
+    radial-gradient(
+      ellipse at center,
+      color-mix(in srgb, var(--color-notification-teal) 13%, transparent) 0%,
+      color-mix(in srgb, var(--color-info-blue) 10%, transparent) 44%,
+      transparent 76%
+    );
+  filter: blur(30px);
+  opacity: 0.76;
+}
+
+.hero-globe-preload {
+  display: none;
+}
+
+.hero-globe-canvas {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  opacity: 0;
+  transform: scale(0.985);
+  transform-origin: 50% 50%;
+  filter: blur(2px);
+  pointer-events: none;
+  transition:
+    opacity 640ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 760ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 640ms cubic-bezier(0.16, 1, 0.3, 1);
+  visibility: hidden;
+  will-change: opacity, transform, filter;
+}
+
+.hero-globe-canvas.is-ready {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+  visibility: visible;
+}
+
+.hero-globe-canvas canvas {
+  display: block;
+  background: transparent;
+  height: 100%;
+  width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.blueprint-grid {
+  background-image:
+    radial-gradient(circle, color-mix(in srgb, var(--color-faded-grid-blue) 18%, transparent) 1px, transparent 1.2px),
+    linear-gradient(color-mix(in srgb, var(--color-steel-gray) 40%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-steel-gray) 35%, transparent) 1px, transparent 1px);
+  background-size: 14px 14px, 56px 56px, 56px 56px;
+}
+
+.soft-map {
+  background-image:
+    radial-gradient(circle at 20% 42%, color-mix(in srgb, var(--color-success-moss) 22%, transparent) 0 1.2px, transparent 1.4px),
+    radial-gradient(circle at 58% 35%, color-mix(in srgb, var(--color-info-blue) 20%, transparent) 0 1.2px, transparent 1.4px),
+    radial-gradient(circle at 82% 64%, color-mix(in srgb, var(--color-ink-blue) 12%, transparent) 0 1.2px, transparent 1.4px);
+  background-size: 12px 12px, 13px 13px, 15px 15px;
+  mask-image: radial-gradient(ellipse at 58% 46%, black 0%, black 52%, transparent 76%);
+}
+
+.halftone-peach {
+  background-color: #fbf6f1;
+  background-image:
+    radial-gradient(ellipse at 90% 0%, color-mix(in srgb, var(--color-action-orange) 11%, transparent), transparent 65%),
+    radial-gradient(circle, color-mix(in srgb, var(--color-action-orange) 18%, transparent) 0.9px, transparent 1.3px);
+  background-size: 100% 100%, 11px 11px;
+  background-repeat: no-repeat, repeat;
+}
+
+.dark-grid {
+  background-image:
+    radial-gradient(circle, color-mix(in srgb, var(--color-notification-teal) 11%, transparent) 1px, transparent 1.4px),
+    linear-gradient(color-mix(in srgb, var(--color-notification-teal) 3.5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-notification-teal) 3.5%, transparent) 1px, transparent 1px);
+  background-size: 18px 18px, 72px 72px, 72px 72px;
+}
+
+.section-shell {
+  padding-block: clamp(var(--spacing-80), 8vw, var(--spacing-144));
+}
+
+.hero-title {
+  font-size: var(--text-display);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+}
+
+.hero-subhead {
+  font-size: var(--text-subheading);
+  line-height: var(--leading-subheading);
+  letter-spacing: var(--tracking-subheading);
+}
+
+.section-title {
+  font-size: var(--text-heading);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
+}
+
+.section-title-lg,
+.section-title-xl {
+  font-size: var(--text-display);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+}
+
+.abm-section-title {
+  color: var(--color-ink-blue);
+  font-size: clamp(3rem, 4.4vw, 3.75rem);
+  font-weight: 300;
+  letter-spacing: 0;
+  line-height: 1.08;
+}
+
+.abm-contact-title {
+  max-width: min(100%, 18ch);
+}
+
+.abm-contact-title-line {
+  display: block;
+  white-space: nowrap;
+}
+
+.abm-section-copy {
+  color: color-mix(in srgb, var(--color-ink-blue) 72%, var(--color-slate-text));
+  font-size: clamp(1.125rem, 1.35vw, 1.25rem);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.42;
+}
+
+.abm-card-title {
+  color: var(--color-ink-blue);
+  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.23;
+  min-height: 3.45rem;
+}
+
+.abm-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 15.5rem;
+}
+
+.abm-card-with-rule {
+  min-height: 16rem;
+}
+
+.abm-card-copy {
+  color: color-mix(in srgb, var(--color-ink-blue) 62%, var(--color-slate-text));
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.52;
+  margin-top: 0.875rem;
+}
+
+.abm-card-copy-balanced {
+  text-wrap: balance;
+}
+
+.abm-eyebrow {
+  color: color-mix(in srgb, var(--color-ink-blue) 42%, var(--color-slate-text));
+  font-size: 0.875rem;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.abm-field-label {
+  color: var(--color-ink-blue);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.abm-field-input {
+  color: var(--color-ink-blue);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.abm-submit {
+  color: var(--color-ink-blue);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.audience-title {
+  font-size: var(--text-heading-sm);
+  line-height: var(--leading-heading-sm);
+  letter-spacing: var(--tracking-heading-sm);
+}
+
+.metric-number {
+  font-size: var(--text-heading-sm);
+  line-height: 1;
+}
+
+.focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 3px;
+}
+
+.focus-ring:focus-visible {
+  outline-color: var(--color-action-orange);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .float-slow {
+    animation: float-slow 8s ease-in-out infinite;
+  }
+
+  .pulse-soft {
+    animation: pulse-soft 3.5s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-stage *,
+  .hero-stage *::before,
+  .hero-stage *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 0.62;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+@media (min-width: 640px) {
+  .hero-title {
+    font-size: 52px;
+    line-height: 1;
+    letter-spacing: -1.56px;
+  }
+
+  .section-title,
+  .section-title-lg,
+  .section-title-xl {
+    font-size: var(--text-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .audience-title {
+    font-size: var(--text-heading);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .metric-number {
+    font-size: 28px;
+    line-height: 1.1;
+    letter-spacing: -0.56px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-title {
+    font-size: 44px;
+    line-height: 1;
+    letter-spacing: -1.1px;
+  }
+
+  .section-title-lg {
+    font-size: 52px;
+    line-height: 1;
+    letter-spacing: -1.56px;
+  }
+
+  .section-title-xl {
+    font-size: 60px;
+    line-height: 1;
+    letter-spacing: -1.8px;
+  }
+
+  .metric-number {
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: -0.64px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-map-scene,
+  .hero-globe-scene {
+    min-height: 38rem;
+  }
+}
+
+@media (max-width: 1023px) {
+  .hero-map-field {
+    left: -36%;
+    top: -6%;
+    width: 168%;
+  }
+
+  .hero-map-panel {
+    left: 0;
+    right: auto;
+    top: 5.5rem;
+    width: min(100%, 29rem);
+  }
+
+  .hero-map-coordinates {
+    left: 0;
+    right: auto;
+  }
+}
+
+@media (max-width: 639px) {
+  .hero-corner-marks {
+    opacity: 0.45;
+  }
+
+  .abm-card,
+  .abm-card-with-rule {
+    min-height: 0;
+  }
+
+  .abm-card-title {
+    min-height: 0;
+  }
+
+  .abm-contact-title {
+    font-size: clamp(2.25rem, 10vw, 2.65rem);
+  }
+
+  .hero-map-scene {
+    min-height: 40rem;
+  }
+
+  .hero-route-command {
+    min-height: 34rem;
+  }
+
+  .hero-globe-scene {
+    min-height: 31rem;
+  }
+
+}
+
+@media (min-width: 1536px) {
+  .hero-title {
+    font-size: 52px;
+    line-height: 1;
+    letter-spacing: -1.4px;
+  }
+}
