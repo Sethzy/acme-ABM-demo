@@ -97,12 +97,12 @@
   background:
     radial-gradient(
       ellipse at 48% 50%,
-      color-mix(in srgb, #ffffff 36%, transparent) 0%,
-      color-mix(in srgb, var(--color-revolut-blue-soft) 14%, transparent) 34%,
-      color-mix(in srgb, var(--color-revolut-blue) 7%, transparent) 52%,
-      transparent 72%
+      color-mix(in srgb, #ffffff 10%, transparent) 0%,
+      color-mix(in srgb, var(--color-revolut-blue-soft) 10%, transparent) 36%,
+      color-mix(in srgb, var(--color-revolut-blue) 5%, transparent) 54%,
+      transparent 74%
     );
-  filter: blur(34px);
+  filter: blur(38px);
   opacity: 0;
   transform: scale(0.96);
   transition:
@@ -124,9 +124,9 @@
     radial-gradient(
       ellipse at 48% 50%,
       transparent 36%,
-      color-mix(in srgb, #ffffff 34%, transparent) 48%,
-      color-mix(in srgb, var(--color-revolut-blue-soft) 22%, transparent) 59%,
-      transparent 74%
+      color-mix(in srgb, #ffffff 12%, transparent) 49%,
+      color-mix(in srgb, var(--color-revolut-blue-soft) 17%, transparent) 61%,
+      transparent 76%
     );
   filter: blur(12px);
   opacity: 0;
@@ -137,12 +137,12 @@
 }
 
 .hero-globe-frame:has(.hero-globe-canvas.is-ready) .hero-globe-halo {
-  opacity: 0.54;
+  opacity: 0.42;
   transform: scale(1);
 }
 
 .hero-globe-frame:has(.hero-globe-canvas.is-ready) .hero-globe-halo-inner {
-  opacity: 0.64;
+  opacity: 0.5;
   transform: scale(1);
 }
 

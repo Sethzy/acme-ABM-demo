@@ -109,9 +109,10 @@ describe("LandingPage", () => {
     expect(css).toContain(".hero-content-layer {\n    --hero-shift-y: -34px;");
     expect(css).toContain(".hero-globe-halo {\n  pointer-events: none;");
     expect(css).toContain("left: 54%;");
-    expect(css).toContain("filter: blur(34px);");
-    expect(css).toContain(".hero-globe-frame:has(.hero-globe-canvas.is-ready) .hero-globe-halo {\n  opacity: 0.54;");
-    expect(css).toContain(".hero-globe-frame:has(.hero-globe-canvas.is-ready) .hero-globe-halo-inner {\n  opacity: 0.64;");
+    expect(css).toContain("color-mix(in srgb, #ffffff 10%, transparent) 0%");
+    expect(css).toContain("filter: blur(38px);");
+    expect(css).toContain(".hero-globe-frame:has(.hero-globe-canvas.is-ready) .hero-globe-halo {\n  opacity: 0.42;");
+    expect(css).toContain(".hero-globe-frame:has(.hero-globe-canvas.is-ready) .hero-globe-halo-inner {\n  opacity: 0.5;");
   });
 
   it("tones the globe ocean without adding overlay polish", () => {
@@ -125,9 +126,9 @@ describe("LandingPage", () => {
     );
     const blueprintCss = readFileSync(join(process.cwd(), "src/design/blueprint.css"), "utf8");
 
-    expect(materials).toContain('OCEAN_COLOR = new THREE.Color("#edf4fb");');
-    expect(materials).toContain('OCEAN_EMISSIVE_COLOR = new THREE.Color("#d6e8f7");');
-    expect(materials).toContain("emissiveIntensity: 0.13");
+    expect(materials).toContain('OCEAN_COLOR = new THREE.Color("#e5f0fa");');
+    expect(materials).toContain('OCEAN_EMISSIVE_COLOR = new THREE.Color("#cddff0");');
+    expect(materials).toContain("emissiveIntensity: 0.09");
     expect(scene).toContain("new THREE.DirectionalLight(0xf0f6ff, 2.15)");
     expect(blueprintCss).not.toContain(".hero-blueprint-layer::after");
     expect(materials).not.toContain("upperLeftLift");

@@ -6,10 +6,10 @@ export const MARKER_RADIUS = 1.012;
 export const CAMERA_Z = 3.6;
 
 export const INK_COLOR = new THREE.Color("#002b5c");
-export const OCEAN_COLOR = new THREE.Color("#edf4fb");
-export const OCEAN_EMISSIVE_COLOR = new THREE.Color("#d6e8f7");
+export const OCEAN_COLOR = new THREE.Color("#e5f0fa");
+export const OCEAN_EMISSIVE_COLOR = new THREE.Color("#cddff0");
 export const ATMOSPHERE_COLOR = new THREE.Color("#7db5f0");
-export const RIM_MATTE_COLOR = new THREE.Color("#fbfcfe");
+export const RIM_MATTE_COLOR = new THREE.Color("#edf4fb");
 
 export function getCameraDistance(width: number) {
   if (width < 640) return 4.82;
@@ -27,7 +27,7 @@ export function createGlobeShell() {
       roughness: 0.86,
       metalness: 0,
       emissive: OCEAN_EMISSIVE_COLOR,
-      emissiveIntensity: 0.13,
+      emissiveIntensity: 0.09,
     }),
   );
   group.add(sphere);
@@ -56,7 +56,7 @@ export function createGlobeShell() {
 
         void main() {
           float edge = 1.0 - abs(vNormal.z);
-          float alpha = pow(edge, 2.6) * 0.135;
+          float alpha = pow(edge, 2.6) * 0.105;
           gl_FragColor = vec4(glowColor, alpha);
         }
       `,
@@ -92,7 +92,7 @@ export function createLimbMatte() {
 
         void main() {
           float edge = 1.0 - abs(vNormal.z);
-          float alpha = smoothstep(0.8, 1.0, edge) * 0.18;
+          float alpha = smoothstep(0.8, 1.0, edge) * 0.12;
           gl_FragColor = vec4(matteColor, alpha);
         }
       `,
