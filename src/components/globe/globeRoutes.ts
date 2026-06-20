@@ -17,6 +17,7 @@ type ArcStyle = {
 type Marker = {
   city: City;
   style: ArcStyle;
+  isHub?: boolean;
 };
 
 export type RouteDraw = RouteTiming & {
@@ -27,26 +28,35 @@ export type RouteDraw = RouteTiming & {
   opacityRatio: number;
 };
 
+export type RouteLayer = {
+  group: THREE.Group;
+  draws: RouteDraw[];
+  hubRing: THREE.Mesh | null;
+  hubFlag: THREE.Mesh | null;
+};
+
 const TONE_STYLES = {
   primary: {
-    color: "#c94a1b",
-    opacity: 0.9,
-    radius: 0.0039,
-    altitude: 0.3,
+    color: "#0075eb",
+    opacity: 0.92,
+    radius: 0.0042,
+    altitude: 0.34,
   },
   secondary: {
-    color: "#08736b",
-    opacity: 0.82,
-    radius: 0.0028,
-    altitude: 0.2,
+    color: "#4d9bf0",
+    opacity: 0.84,
+    radius: 0.003,
+    altitude: 0.22,
   },
   quiet: {
-    color: "#7055ad",
-    opacity: 0.72,
-    radius: 0.0024,
-    altitude: 0.105,
+    color: "#6fa8dc",
+    opacity: 0.74,
+    radius: 0.0025,
+    altitude: 0.115,
   },
 } satisfies Record<NonNullable<Corridor["tone"]>, ArcStyle>;
+
+const HUB_ACCENT_COLOR = "#ef3340";
 
 function getCorridorStyle(corridor: Corridor) {
   return TONE_STYLES[corridor.tone ?? "quiet"];
@@ -128,11 +138,11 @@ function createRouteDraw(corridor: Corridor, index: number): RouteDraw {
     mesh,
     drawCount: geometry.index?.count ?? geometry.getAttribute("position").count,
     opacity: style.opacity,
-    delay: index * 0.72,
-    duration: isPrimary ? 2.55 : 2.25,
-    hold: isPrimary ? 0.5 : 0.42,
+    delay: index * 0.78,
+    duration: isPrimary ? 2.7 : 2.3,
+    hold: isPrimary ? 0.55 : 0.45,
     fade: 0.4,
-    rest: isPrimary ? 1.05 : 1.55,
+    rest: isPrimary ? 1.1 : 1.6,
     progress: -1,
     opacityRatio: 0,
   };
@@ -140,6 +150,21 @@ function createRouteDraw(corridor: Corridor, index: number): RouteDraw {
 
 function collectMarkers(input: Corridor[]) {
   const markers = new Map<string, Marker>();
+  const originCount = new Map<string, number>();
+
+  for (const corridor of input) {
+    const fromKey = `${corridor.from.lat}:${corridor.from.lng}`;
+    originCount.set(fromKey, (originCount.get(fromKey) ?? 0) + 1);
+  }
+
+  let hubKey: string | null = null;
+  let hubMax = 0;
+  for (const [key, count] of originCount) {
+    if (count > hubMax) {
+      hubMax = count;
+      hubKey = key;
+    }
+  }
 
   for (const corridor of input) {
     const style = getCorridorStyle(corridor);
@@ -147,7 +172,11 @@ function collectMarkers(input: Corridor[]) {
     const toKey = `${corridor.to.lat}:${corridor.to.lng}`;
 
     if (!markers.has(fromKey) || corridor.active) {
-      markers.set(fromKey, { city: corridor.from, style: TONE_STYLES.primary });
+      markers.set(fromKey, {
+        city: corridor.from,
+        style: TONE_STYLES.primary,
+        isHub: fromKey === hubKey,
+      });
     }
 
     markers.set(toKey, {
@@ -159,13 +188,15 @@ function collectMarkers(input: Corridor[]) {
   return Array.from(markers.values());
 }
 
-function createMarkerMesh(marker: Marker) {
+function createMarkerMesh(marker: Marker): THREE.Group {
   const normal = latLngToVector(marker.city.lat, marker.city.lng, 1).normalize();
   const markerGroup = new THREE.Group();
-  const markerColor = marker.style.color;
+  const isHub = marker.isHub ?? false;
+  const markerColor = isHub ? HUB_ACCENT_COLOR : marker.style.color;
 
+  const ringRadius = isHub ? 0.024 : 0.018;
   const ring = new THREE.Mesh(
-    new THREE.TorusGeometry(0.018, 0.0024, 8, 36),
+    new THREE.TorusGeometry(ringRadius, 0.0024, 8, 36),
     new THREE.MeshBasicMaterial({
       color: markerColor,
       transparent: true,
@@ -178,10 +209,15 @@ function createMarkerMesh(marker: Marker) {
   ring.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal);
   markerGroup.add(ring);
 
+  const pinRadius = isHub ? 0.009 : 0.0056;
   const pin = new THREE.Mesh(
-    new THREE.SphereGeometry(0.0056, 14, 14),
+    new THREE.SphereGeometry(pinRadius, 14, 14),
     new THREE.MeshBasicMaterial({
-      color: corridorIsPrimary(marker) ? TONE_STYLES.primary.color : marker.style.color,
+      color: isHub
+        ? HUB_ACCENT_COLOR
+        : corridorIsPrimary(marker)
+          ? TONE_STYLES.primary.color
+          : marker.style.color,
       transparent: true,
       opacity: 0.92,
       depthTest: true,
@@ -195,6 +231,110 @@ function createMarkerMesh(marker: Marker) {
   return markerGroup;
 }
 
+function drawStar(
+  context: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  radius: number,
+) {
+  context.beginPath();
+  for (let i = 0; i < 10; i += 1) {
+    const angle = -Math.PI / 2 + (i * Math.PI) / 5;
+    const pointRadius = i % 2 === 0 ? radius : radius * 0.42;
+    const px = x + Math.cos(angle) * pointRadius;
+    const py = y + Math.sin(angle) * pointRadius;
+    if (i === 0) context.moveTo(px, py);
+    else context.lineTo(px, py);
+  }
+  context.closePath();
+  context.fill();
+}
+
+function createHubFlag(normal: THREE.Vector3) {
+  const flag = new THREE.Mesh(
+    new THREE.PlaneGeometry(1, 1),
+    new THREE.MeshBasicMaterial({
+      color: "#ffffff",
+      transparent: true,
+      opacity: 0.96,
+      depthTest: true,
+      depthWrite: false,
+      side: THREE.FrontSide,
+    }),
+  );
+  flag.scale.set(0.14, 0.087, 1);
+  const globeUp = new THREE.Vector3(0, 1, 0);
+  const east = globeUp.clone().cross(normal).normalize();
+  const north = normal.clone().cross(east).normalize();
+  flag.position.copy(
+    east.multiplyScalar(0.044)
+      .add(north.multiplyScalar(-0.092))
+      .add(normal.clone().multiplyScalar(0.018)),
+  );
+  flag.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal);
+  flag.renderOrder = 9;
+  flag.userData.label = "SG flag";
+
+  if (
+    typeof document === "undefined" ||
+    (typeof navigator !== "undefined" && navigator.userAgent.includes("jsdom"))
+  ) {
+    return flag;
+  }
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 192;
+  canvas.height = 120;
+
+  const context = canvas.getContext("2d");
+  if (!context) return flag;
+
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  context.shadowColor = "rgba(0, 43, 92, 0.18)";
+  context.shadowBlur = 12;
+  context.shadowOffsetY = 4;
+  context.fillStyle = "rgba(255, 255, 255, 0.96)";
+  context.beginPath();
+  context.roundRect(28, 24, 136, 80, 12);
+  context.fill();
+
+  context.shadowColor = "transparent";
+  context.fillStyle = "#ef3340";
+  context.beginPath();
+  context.roundRect(32, 28, 128, 36, 8);
+  context.fill();
+  context.fillRect(32, 48, 128, 18);
+
+  context.fillStyle = "#ffffff";
+  context.beginPath();
+  context.arc(58, 46, 14, 0, Math.PI * 2);
+  context.fill();
+
+  context.fillStyle = "#ef3340";
+  context.beginPath();
+  context.arc(64, 46, 12, 0, Math.PI * 2);
+  context.fill();
+
+  context.fillStyle = "#ffffff";
+  [
+    [88, 34],
+    [98, 42],
+    [94, 55],
+    [82, 55],
+    [78, 42],
+  ].forEach(([x, y]) => drawStar(context, x, y, 5));
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+
+  const material = flag.material as THREE.MeshBasicMaterial;
+  material.map = texture;
+  material.needsUpdate = true;
+
+  return flag;
+}
+
 function getFadableMaterials(object: THREE.Object3D) {
   const mesh = object as THREE.Mesh;
   const material = mesh.material;
@@ -202,9 +342,10 @@ function getFadableMaterials(object: THREE.Object3D) {
   return Array.isArray(material) ? material : [material];
 }
 
-export function createRouteLayer() {
+export function createRouteLayer(): RouteLayer {
   const group = new THREE.Group();
   const draws: RouteDraw[] = [];
+  let hubFlag: THREE.Mesh | null = null;
 
   corridors.forEach((corridor, index) => {
     group.add(createArcMesh(corridor));
@@ -214,10 +355,16 @@ export function createRouteLayer() {
   });
 
   for (const marker of collectMarkers(corridors)) {
-    group.add(createMarkerMesh(marker));
+    const markerGroup = createMarkerMesh(marker);
+    if (marker.isHub) {
+      const normal = latLngToVector(marker.city.lat, marker.city.lng, 1).normalize();
+      hubFlag = createHubFlag(normal);
+      if (hubFlag) markerGroup.add(hubFlag);
+    }
+    group.add(markerGroup);
   }
 
-  return { group, draws };
+  return { group, draws, hubRing: null, hubFlag };
 }
 
 export function updateRouteDraws(draws: RouteDraw[], routeClock: number) {
@@ -273,6 +420,7 @@ export function setRouteLayerOpacity(routeGroup: THREE.Group, routeDraws: RouteD
 
     for (const material of getFadableMaterials(child)) {
       if (!("opacity" in material)) continue;
+      if (child.userData.routeLayerOpacity === "skip") continue;
 
       const baseOpacity =
         typeof material.userData.baseOpacity === "number"

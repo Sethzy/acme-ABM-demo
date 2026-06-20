@@ -80,10 +80,10 @@ export function createGlobeScene({
   const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
   camera.position.set(0, 0, getCameraDistance(width));
 
-  const light = new THREE.DirectionalLight(0xf8fbfc, 2.15);
+  const light = new THREE.DirectionalLight(0xf0f6ff, 2.15);
   light.position.set(-2.8, 2.6, 4.2);
   scene.add(light);
-  scene.add(new THREE.AmbientLight(0xb9d3dd, 1.65));
+  scene.add(new THREE.AmbientLight(0xc8d8f0, 1.65));
 
   const globeGroup = createGlobeShell();
   globeGroup.rotation.set(

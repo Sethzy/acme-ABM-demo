@@ -4,7 +4,7 @@ import { HeroSection3d } from "./HeroSection3d";
 
 export function AcmeDemoPage() {
   return (
-    <div className="landing-shell min-h-[100dvh] bg-[var(--color-ghost-white)] text-[var(--color-ink-blue)]">
+    <div className="landing-shell min-h-[100dvh] bg-[var(--color-surface)] text-[var(--color-ink)]">
       <Header />
       <main>
         <HeroSection3d />

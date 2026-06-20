@@ -3,16 +3,18 @@ import * as THREE from "three";
 export const GLOBE_RADIUS = 1;
 export const ARC_RADIUS = 1.008;
 export const MARKER_RADIUS = 1.012;
-export const CAMERA_Z = 4.3;
+export const CAMERA_Z = 3.6;
 
-export const INK_COLOR = new THREE.Color("#123653");
-export const OCEAN_COLOR = new THREE.Color("#eef5f2");
-export const OCEAN_EMISSIVE_COLOR = new THREE.Color("#d6e9e5");
-export const ATMOSPHERE_COLOR = new THREE.Color("#a8cad7");
-export const RIM_MATTE_COLOR = new THREE.Color("#fbfaf6");
+export const INK_COLOR = new THREE.Color("#002b5c");
+export const OCEAN_COLOR = new THREE.Color("#edf4fb");
+export const OCEAN_EMISSIVE_COLOR = new THREE.Color("#d6e8f7");
+export const ATMOSPHERE_COLOR = new THREE.Color("#7db5f0");
+export const RIM_MATTE_COLOR = new THREE.Color("#fbfcfe");
 
 export function getCameraDistance(width: number) {
-  return width < 640 ? 4.82 : CAMERA_Z;
+  if (width < 640) return 4.82;
+  if (width < 1024) return 4.55;
+  return CAMERA_Z;
 }
 
 export function createGlobeShell() {
@@ -54,7 +56,7 @@ export function createGlobeShell() {
 
         void main() {
           float edge = 1.0 - abs(vNormal.z);
-          float alpha = pow(edge, 3.1) * 0.045;
+          float alpha = pow(edge, 2.6) * 0.135;
           gl_FragColor = vec4(glowColor, alpha);
         }
       `,
@@ -106,7 +108,7 @@ export function createRim() {
     new THREE.MeshBasicMaterial({
       color: INK_COLOR,
       transparent: true,
-      opacity: 0.006,
+      opacity: 0.05,
       side: THREE.BackSide,
       depthWrite: false,
     }),

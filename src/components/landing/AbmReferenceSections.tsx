@@ -1,4 +1,5 @@
 import { acmeContent } from "@/content/acme";
+import { RevealOnScroll } from "./RevealOnScroll";
 
 function SectionIntro({
   title,
@@ -23,10 +24,13 @@ export function AbmReferenceSections() {
   const { process, launch, contact } = acmeContent;
 
   return (
-    <div className="abm-reference-shell relative isolate overflow-hidden text-[var(--color-ink-blue)]">
+    <div className="abm-reference-shell relative isolate overflow-hidden text-[var(--color-ink)]">
       <div className="abm-reference-blueprint hero-blueprint-layer opacity-70" aria-hidden="true" />
 
-      <section className="relative mx-auto w-full max-w-[1200px] px-5 pb-[82px] pt-[64px] sm:px-8 sm:pb-[112px] sm:pt-[148px] lg:px-10 xl:px-0">
+      <RevealOnScroll
+        as="section"
+        className="relative mx-auto w-full max-w-[1200px] px-5 pb-[82px] pt-[64px] sm:px-8 sm:pb-[112px] sm:pt-[148px] lg:px-10 xl:px-0"
+      >
         <SectionIntro
           title={process.title}
           body={process.body}
@@ -49,28 +53,37 @@ export function AbmReferenceSections() {
             </article>
           ))}
         </div>
-      </section>
+      </RevealOnScroll>
 
-      <section className="relative mx-auto w-full max-w-[1200px] px-5 py-[92px] sm:px-8 sm:py-[124px] lg:px-10 xl:px-0">
+      <RevealOnScroll
+        as="section"
+        className="relative mx-auto w-full max-w-[1200px] px-5 py-[92px] sm:px-8 sm:py-[124px] lg:px-10 xl:px-0"
+      >
         <SectionIntro
           title={launch.title}
           body={launch.body}
         />
 
         <div className="abm-card-grid abm-card-grid-4 mt-[74px]">
-          {launch.cards.map((card) => (
+          {launch.cards.map((card, index) => (
             <article
               key={card.title}
               className="abm-card abm-card-cell px-9 py-10 sm:px-10 sm:py-10 lg:px-9 xl:px-10"
             >
+              <div className="abm-process-meta" aria-hidden="true">
+                <span className="abm-process-index">{String(index + 1).padStart(2, "0")}</span>
+                {" "}
+                <span>Workflow</span>
+              </div>
               <h3 className="abm-card-title max-w-[13ch]">{card.title}</h3>
               <p className="abm-card-copy">{card.body}</p>
             </article>
           ))}
         </div>
-      </section>
+      </RevealOnScroll>
 
-      <section
+      <RevealOnScroll
+        as="section"
         id="contact"
         className="relative mx-auto w-full max-w-[1200px] px-5 pb-[142px] pt-[92px] sm:px-8 sm:pb-[170px] sm:pt-[124px] lg:px-10 xl:px-0"
       >
@@ -95,12 +108,12 @@ export function AbmReferenceSections() {
           </p>
         </div>
 
-        <form className="mx-auto mt-[64px] max-w-[880px] border border-[color-mix(in_srgb,var(--color-faded-grid-blue)_66%,var(--color-steel-gray))] bg-[color-mix(in_srgb,var(--color-ghost-white)_82%,transparent)] px-9 py-10 shadow-[0_28px_80px_-70px_rgba(1,24,33,0.5)] sm:px-12 sm:py-12">
+        <form className="mx-auto mt-[64px] max-w-[880px] border border-[color-mix(in_srgb,var(--color-border)_72%,var(--color-faded-grid-blue))] bg-[color-mix(in_srgb,var(--color-surface-raised)_88%,transparent)] px-9 py-10 shadow-[0_28px_80px_-70px_rgba(1,24,33,0.45)] backdrop-blur-[2px] sm:px-12 sm:py-12">
           <div className="grid gap-6 md:grid-cols-2">
             <label className="abm-field-label grid gap-3 text-left">
               Name
               <input
-                className="abm-field-input h-[58px] border border-[color-mix(in_srgb,var(--color-steel-gray)_78%,var(--color-faded-grid-blue))] bg-[var(--color-ghost-white)] px-5 outline-none transition focus:border-[color-mix(in_srgb,var(--color-info-blue)_76%,var(--color-faded-grid-blue))]"
+                className="abm-field-input h-[58px] border border-[color-mix(in_srgb,var(--color-border)_78%,var(--color-faded-grid-blue))] bg-[var(--color-surface-raised)] px-5 outline-none transition focus:border-[var(--color-revolut-blue)]"
                 placeholder={contact.namePlaceholder}
                 type="text"
               />
@@ -108,14 +121,14 @@ export function AbmReferenceSections() {
             <label className="abm-field-label grid gap-3 text-left">
               Work email
               <input
-                className="abm-field-input h-[58px] border border-[color-mix(in_srgb,var(--color-steel-gray)_78%,var(--color-faded-grid-blue))] bg-[var(--color-ghost-white)] px-5 outline-none transition focus:border-[color-mix(in_srgb,var(--color-info-blue)_76%,var(--color-faded-grid-blue))]"
+                className="abm-field-input h-[58px] border border-[color-mix(in_srgb,var(--color-border)_78%,var(--color-faded-grid-blue))] bg-[var(--color-surface-raised)] px-5 outline-none transition focus:border-[var(--color-revolut-blue)]"
                 placeholder={contact.emailPlaceholder}
                 type="email"
               />
             </label>
           </div>
           <button
-            className="abm-submit mt-9 min-h-[64px] w-full border border-[color-mix(in_srgb,var(--color-info-blue)_58%,var(--color-faded-grid-blue))] bg-[color-mix(in_srgb,var(--color-info-blue)_28%,var(--color-ghost-white))] px-6 transition hover:bg-[color-mix(in_srgb,var(--color-info-blue)_36%,var(--color-ghost-white))] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-info-blue)] focus-visible:ring-offset-2"
+            className="abm-submit mt-9 min-h-[64px] w-full border border-[color-mix(in_srgb,var(--color-revolut-blue-dark)_40%,var(--color-faded-grid-blue))] bg-[var(--color-revolut-blue)] px-6 text-[var(--color-surface-raised)] shadow-[0_12px_32px_-18px_rgba(0,117,235,0.6)] transition hover:bg-[var(--color-revolut-blue-dark)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-revolut-blue)] focus-visible:ring-offset-2"
             aria-label={contact.buttonLabel}
             type="button"
           >
@@ -123,7 +136,7 @@ export function AbmReferenceSections() {
             <span className="hidden sm:inline">{contact.buttonLabel}</span>
           </button>
         </form>
-      </section>
+      </RevealOnScroll>
     </div>
   );
 }

@@ -14,9 +14,9 @@ export function HeroShell({
       <div className="hero-blueprint-layer" aria-hidden="true" />
       <div className="hero-corner-marks" aria-hidden="true" />
       <div className="relative mx-auto flex min-h-[100dvh] w-full max-w-[1200px] flex-col px-5 pb-5 pt-[112px] sm:px-8 sm:pb-7 sm:pt-[116px] lg:px-10 lg:pt-[120px] xl:px-0">
-        <div className="hero-reveal-layer grid flex-1 items-center gap-8 lg:grid-cols-[0.86fr_1.14fr] lg:gap-10 xl:gap-14">
+        <div className="hero-reveal-layer hero-content-layer grid flex-1 items-center gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-10 xl:gap-12">
           <HeroNarrative variant={variant} />
-          <div className="relative z-10 min-h-[22rem] lg:min-h-[34rem] lg:translate-x-8 lg:-translate-y-[3%] xl:translate-x-12 2xl:translate-x-16">
+          <div className="relative z-10 min-h-[24rem] lg:min-h-[36rem] xl:translate-x-4 2xl:translate-x-6">
             {children}
           </div>
         </div>
@@ -32,7 +32,7 @@ function HeroNarrative({ variant }: { variant: "map" | "globe" }) {
       : { code: null, label: acmeContent.hero.eyebrow };
 
   return (
-    <div className="relative z-20 max-w-[36.5rem] pt-2 lg:-translate-y-10 lg:pt-4 xl:-translate-y-14 2xl:-translate-y-[72px]">
+    <div className="relative z-20 max-w-[36.5rem] -translate-y-[5%] pt-1 lg:pt-3">
       <div className="hero-kicker">
         {kicker.code ? (
           <span className="hero-kicker-code">{kicker.code}</span>
@@ -43,13 +43,13 @@ function HeroNarrative({ variant }: { variant: "map" | "globe" }) {
         )}
         <span>{kicker.label}</span>
       </div>
-      <h1 className="mt-7 max-w-[15.5ch] text-balance text-[48px] font-light leading-[1.08] tracking-normal text-[var(--color-ink-blue)] sm:max-w-[19ch] sm:text-[60px] lg:text-[60px]">
+      <h1 className="mt-6 max-w-[15.5ch] text-balance text-[48px] font-light leading-[1.07] tracking-normal text-[var(--color-ink)] sm:max-w-[19ch] sm:text-[60px] lg:text-[60px]">
         {acmeContent.hero.headline}
       </h1>
-      <p className="mt-6 max-w-[35rem] text-[18px] font-normal leading-[1.43] tracking-normal text-[color-mix(in_srgb,var(--color-ink-blue)_80%,var(--color-slate-text))] sm:text-[20px] sm:leading-[1.38]">
+      <p className="mt-6 max-w-[34rem] text-[18px] font-normal leading-[1.45] tracking-normal text-[color-mix(in_srgb,var(--color-ink)_78%,var(--color-ink-muted))] sm:text-[20px] sm:leading-[1.4]">
         {acmeContent.hero.subhead}
       </p>
-      <div className="mt-7 flex flex-wrap items-center gap-3">
+      <div className="mt-8 flex flex-wrap items-center gap-3">
         <ActionLink href="#contact" variant="heroPrimary">
           {acmeContent.hero.primaryCta}
         </ActionLink>

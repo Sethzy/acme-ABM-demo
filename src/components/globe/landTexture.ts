@@ -84,7 +84,7 @@ export function createLandDotMaterial(viewportHeight: number) {
 
       void main() {
         float dist = distance(gl_PointCoord, vec2(0.5));
-        float circle = 1.0 - smoothstep(0.34, 0.5, dist);
+        float circle = 1.0 - smoothstep(0.38, 0.5, dist);
         float core = 1.0 - smoothstep(0.12, 0.46, dist);
         float alpha = circle * mix(0.46, 0.74, core) * vLimbAlpha;
 
