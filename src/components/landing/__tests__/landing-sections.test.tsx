@@ -87,23 +87,31 @@ describe("LandingPage", () => {
     expect(css).toContain("padding: 6px 14px 6px 10px;");
   });
 
-  it("keeps the hero globe column centered against the narrative", () => {
+  it("keeps the hero headline roomy while anchoring the globe to the right", () => {
     const hero = readFileSync(
       join(process.cwd(), "src/components/landing/HeroShared.tsx"),
       "utf8",
     );
 
     expect(hero).toContain("hero-content-layer");
-    expect(hero).toContain("lg:grid-cols-[0.8fr_1.2fr]");
+    expect(hero).toContain("max-w-[1280px]");
+    expect(hero).toContain("lg:grid-cols-[0.92fr_1.08fr]");
+    expect(hero).toContain("sm:max-w-[21ch]");
+    expect(hero).toContain("lg:ml-4");
+    expect(hero).toContain("xl:ml-6");
     expect(hero).toContain("-translate-y-[5%]");
-    expect(hero).toContain("xl:translate-x-4");
+    expect(hero).toContain("xl:translate-x-6");
+    expect(hero).not.toContain("lg:grid-cols-[0.8fr_1.2fr]");
     expect(hero).not.toContain("lg:translate-x-4");
 
     const css = readFileSync(join(process.cwd(), "src/design/landing.css"), "utf8");
 
     expect(css).toContain(".hero-content-layer {\n    --hero-shift-y: -34px;");
-    expect(css).toContain(".hero-globe-frame:has(.hero-globe-canvas.is-ready) .hero-globe-halo {\n  opacity: 0.72;");
-    expect(css).toContain(".hero-globe-frame:has(.hero-globe-canvas.is-ready) .hero-globe-halo-inner {\n  opacity: 0.78;");
+    expect(css).toContain(".hero-globe-halo {\n  pointer-events: none;");
+    expect(css).toContain("left: 54%;");
+    expect(css).toContain("filter: blur(34px);");
+    expect(css).toContain(".hero-globe-frame:has(.hero-globe-canvas.is-ready) .hero-globe-halo {\n  opacity: 0.54;");
+    expect(css).toContain(".hero-globe-frame:has(.hero-globe-canvas.is-ready) .hero-globe-halo-inner {\n  opacity: 0.64;");
   });
 
   it("tones the globe ocean without adding overlay polish", () => {
