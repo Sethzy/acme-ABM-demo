@@ -40,6 +40,7 @@ describe("globeRoutes", () => {
     expect(flagBelowOffset).toBeGreaterThan(-0.11);
     const flagMaterial = layer.hubFlag?.material as THREE.MeshBasicMaterial;
     expect(flagMaterial.depthTest).toBe(true);
+    expect(flagMaterial.opacity).toBe(0.92);
   });
 
   it("uses a blue tint for quiet routes instead of grey", () => {

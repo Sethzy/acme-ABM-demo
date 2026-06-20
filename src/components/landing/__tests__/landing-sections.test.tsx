@@ -99,6 +99,7 @@ describe("LandingPage", () => {
     expect(hero).toContain("sm:max-w-[21ch]");
     expect(hero).toContain("lg:ml-4");
     expect(hero).toContain("xl:ml-6");
+    expect(hero).toContain("lg:text-[57px]");
     expect(hero).toContain("-translate-y-[5%]");
     expect(hero).toContain("xl:translate-x-6");
     expect(hero).not.toContain("lg:grid-cols-[0.8fr_1.2fr]");
@@ -132,6 +133,47 @@ describe("LandingPage", () => {
     expect(scene).toContain("new THREE.DirectionalLight(0xf0f6ff, 2.15)");
     expect(blueprintCss).not.toContain(".hero-blueprint-layer::after");
     expect(materials).not.toContain("upperLeftLift");
+  });
+
+  it("keeps the grid subtle and cleaner behind the globe", () => {
+    const blueprintCss = readFileSync(join(process.cwd(), "src/design/blueprint.css"), "utf8");
+
+    expect(blueprintCss).toContain("var(--color-border) 44%");
+    expect(blueprintCss).toContain("var(--color-border) 38%");
+    expect(blueprintCss).toContain("var(--color-revolut-blue) 7%");
+    expect(blueprintCss).toContain("color-mix(in srgb, #ffffff 58%, transparent)");
+  });
+
+  it("staggers post-hero cards without scaling them", () => {
+    const sections = readFileSync(
+      join(process.cwd(), "src/components/landing/AbmReferenceSections.tsx"),
+      "utf8",
+    );
+    const css = readFileSync(join(process.cwd(), "src/design/landing.css"), "utf8");
+
+    expect(sections).toContain("getRevealDelay(index)");
+    expect(sections).toContain("reveal-stagger-item");
+    expect(sections).toContain("--reveal-delay");
+    expect(css).toContain(".reveal-section .reveal-stagger-item");
+    expect(css).toContain("translateY(8px)");
+    expect(css).toContain("transition-delay: var(--reveal-delay, 0ms);");
+    const staggerBlock = css.slice(
+      css.indexOf(".reveal-section .reveal-stagger-item"),
+      css.indexOf(".reveal-section.is-visible .reveal-stagger-item"),
+    );
+    expect(staggerBlock).not.toContain("scale(");
+  });
+
+  it("keeps hero CTAs tactile while preserving clean focus", () => {
+    const primitives = readFileSync(
+      join(process.cwd(), "src/components/landing/VisualPrimitives.tsx"),
+      "utf8",
+    );
+
+    expect(primitives).toContain("hover:shadow-[0_16px_34px_-16px_rgba(0,117,235,0.48)]");
+    expect(primitives).toContain("hover:bg-[color-mix(in_srgb,var(--color-revolut-blue)_20%,var(--color-revolut-blue-tint))]");
+    expect(primitives).toContain("group-hover:translate-x-[2px]");
+    expect(primitives).toContain("focus-ring");
   });
 
   it("redirects the legacy 3D route to the canonical root page", async () => {

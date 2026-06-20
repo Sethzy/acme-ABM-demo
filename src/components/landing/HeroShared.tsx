@@ -43,7 +43,7 @@ function HeroNarrative({ variant }: { variant: "map" | "globe" }) {
         )}
         <span>{kicker.label}</span>
       </div>
-      <h1 className="mt-6 max-w-[15.5ch] text-balance text-[48px] font-light leading-[1.07] tracking-normal text-[var(--color-ink)] sm:max-w-[21ch] sm:text-[60px] lg:text-[60px]">
+      <h1 className="mt-6 max-w-[15.5ch] text-balance text-[48px] font-light leading-[1.07] tracking-normal text-[var(--color-ink)] sm:max-w-[21ch] sm:text-[60px] lg:text-[57px]">
         {acmeContent.hero.headline}
       </h1>
       <p className="mt-6 max-w-[34rem] text-[18px] font-normal leading-[1.45] tracking-normal text-[color-mix(in_srgb,var(--color-ink)_78%,var(--color-ink-muted))] sm:text-[20px] sm:leading-[1.4]">

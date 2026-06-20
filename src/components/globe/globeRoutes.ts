@@ -256,7 +256,7 @@ function createHubFlag(normal: THREE.Vector3) {
     new THREE.MeshBasicMaterial({
       color: "#ffffff",
       transparent: true,
-      opacity: 0.96,
+      opacity: 0.92,
       depthTest: true,
       depthWrite: false,
       side: THREE.FrontSide,
@@ -291,10 +291,10 @@ function createHubFlag(normal: THREE.Vector3) {
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
-  context.shadowColor = "rgba(0, 43, 92, 0.18)";
-  context.shadowBlur = 12;
-  context.shadowOffsetY = 4;
-  context.fillStyle = "rgba(255, 255, 255, 0.96)";
+  context.shadowColor = "rgba(0, 43, 92, 0.1)";
+  context.shadowBlur = 8;
+  context.shadowOffsetY = 3;
+  context.fillStyle = "rgba(255, 255, 255, 0.92)";
   context.beginPath();
   context.roundRect(28, 24, 136, 80, 12);
   context.fill();

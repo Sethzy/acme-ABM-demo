@@ -1,5 +1,10 @@
+import type { CSSProperties } from "react";
 import { acmeContent } from "@/content/acme";
 import { RevealOnScroll } from "./RevealOnScroll";
+
+function getRevealDelay(index: number) {
+  return { "--reveal-delay": `${(index + 1) * 60}ms` } as CSSProperties;
+}
 
 function SectionIntro({
   title,
@@ -38,10 +43,11 @@ export function AbmReferenceSections() {
         />
 
         <div className="abm-card-grid abm-card-grid-3 abm-process-grid mt-[70px]">
-          {process.cards.map((card) => (
+          {process.cards.map((card, index) => (
             <article
               key={card.title}
-              className="abm-card abm-card-cell abm-card-with-rule abm-process-card px-9 py-10 sm:px-11 sm:py-11 lg:px-10 xl:px-11"
+              className="reveal-stagger-item abm-card abm-card-cell abm-card-with-rule abm-process-card px-9 py-10 sm:px-11 sm:py-11 lg:px-10 xl:px-11"
+              style={getRevealDelay(index)}
             >
               <div className="abm-process-meta" aria-hidden="true">
                 <span className="abm-process-index">{card.step}</span>
@@ -68,7 +74,8 @@ export function AbmReferenceSections() {
           {launch.cards.map((card, index) => (
             <article
               key={card.title}
-              className="abm-card abm-card-cell px-9 py-10 sm:px-10 sm:py-10 lg:px-9 xl:px-10"
+              className="reveal-stagger-item abm-card abm-card-cell px-9 py-10 sm:px-10 sm:py-10 lg:px-9 xl:px-10"
+              style={getRevealDelay(index)}
             >
               <div className="abm-process-meta" aria-hidden="true">
                 <span className="abm-process-index">{String(index + 1).padStart(2, "0")}</span>
