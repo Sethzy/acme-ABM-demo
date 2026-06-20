@@ -100,6 +100,7 @@ describe("routeVisibility", () => {
 
     const yawSamples = sampleTimes.map((time) => getPendulumRotationY(time));
 
+    expect(GLOBE_YAW_AMPLITUDE).toBe(0.34);
     expect(yawSamples[0]).toBeCloseTo(BASE_GROUP_ROTATION.y, 4);
     expect(Math.max(...yawSamples)).toBeCloseTo(
       BASE_GROUP_ROTATION.y + GLOBE_YAW_AMPLITUDE,
