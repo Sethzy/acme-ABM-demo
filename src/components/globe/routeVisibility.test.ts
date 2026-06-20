@@ -3,8 +3,11 @@ import { describe, expect, it } from "vitest";
 import { cities } from "./corridors";
 import {
   BASE_GROUP_ROTATION,
+  GLOBE_YAW_AMPLITUDE,
+  GLOBE_YAW_FREQUENCY,
   getAnchorFrontness,
   getAnchorViewPosition,
+  getPendulumRotationY,
   getRouteGate,
   getRouteDrawState,
   resetRouteClock,
@@ -86,4 +89,30 @@ describe("routeVisibility", () => {
     expect(restartedDraw.opacityRatio).toBe(1);
   });
 
+  it("keeps the animated globe yaw bounded instead of drifting to ocean", () => {
+    const group = new THREE.Group();
+    const sampleTimes = [
+      0,
+      (Math.PI / 2) / GLOBE_YAW_FREQUENCY,
+      Math.PI / GLOBE_YAW_FREQUENCY,
+      (Math.PI * 3 / 2) / GLOBE_YAW_FREQUENCY,
+    ];
+
+    const yawSamples = sampleTimes.map((time) => getPendulumRotationY(time));
+
+    expect(yawSamples[0]).toBeCloseTo(BASE_GROUP_ROTATION.y, 4);
+    expect(Math.max(...yawSamples)).toBeCloseTo(
+      BASE_GROUP_ROTATION.y + GLOBE_YAW_AMPLITUDE,
+      4,
+    );
+    expect(Math.min(...yawSamples)).toBeCloseTo(
+      BASE_GROUP_ROTATION.y - GLOBE_YAW_AMPLITUDE,
+      4,
+    );
+
+    for (const yaw of yawSamples) {
+      group.rotation.set(BASE_GROUP_ROTATION.x, yaw, BASE_GROUP_ROTATION.z);
+      expect(getAnchorFrontness(group, cities.singapore)).toBeGreaterThan(0.55);
+    }
+  });
 });

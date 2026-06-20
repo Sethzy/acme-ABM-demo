@@ -135,12 +135,13 @@ describe("LandingPage", () => {
     expect(materials).not.toContain("upperLeftLift");
   });
 
-  it("keeps the grid subtle and cleaner behind the globe", () => {
+  it("uses a standard single-weight grid and stays cleaner behind the globe", () => {
     const blueprintCss = readFileSync(join(process.cwd(), "src/design/blueprint.css"), "utf8");
 
-    expect(blueprintCss).toContain("var(--color-border) 44%");
-    expect(blueprintCss).toContain("var(--color-border) 38%");
-    expect(blueprintCss).toContain("var(--color-revolut-blue) 7%");
+    expect(blueprintCss).toContain("var(--color-border) 36%");
+    expect(blueprintCss).toContain("background-size: 24px 24px;");
+    expect(blueprintCss).not.toContain("192px 192px");
+    expect(blueprintCss).not.toContain("var(--color-revolut-blue) 7%");
     expect(blueprintCss).toContain("color-mix(in srgb, #ffffff 58%, transparent)");
   });
 

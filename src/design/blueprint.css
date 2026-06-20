@@ -12,12 +12,10 @@
   inset: 0;
   z-index: -2;
   background-image:
-    linear-gradient(color-mix(in srgb, var(--color-border) 44%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--color-border) 38%, transparent) 1px, transparent 1px),
-    linear-gradient(color-mix(in srgb, var(--color-revolut-blue) 7%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--color-revolut-blue) 7%, transparent) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--color-border) 36%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-border) 36%, transparent) 1px, transparent 1px);
   background-position: center top;
-  background-size: 24px 24px, 24px 24px, 192px 192px, 192px 192px;
+  background-size: 24px 24px;
   mask-image: linear-gradient(to bottom, black 0%, black 54%, transparent 100%);
 }
 

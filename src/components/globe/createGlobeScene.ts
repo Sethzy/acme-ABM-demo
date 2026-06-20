@@ -2,9 +2,9 @@ import * as THREE from "three";
 import { createLandDotGeometry, createLandDotMaterial } from "./landTexture";
 import {
   BASE_GROUP_ROTATION,
-  ROTATION_SPEED,
   approachRouteAlpha,
   getAnchorFrontness,
+  getPendulumRotationY,
   getRouteGate,
   resetRouteClock,
 } from "./routeVisibility";
@@ -114,6 +114,7 @@ export function createGlobeScene({
   let frame = 0;
   let revealFrame = 0;
   let lastFrameAt = performance.now() / 1000;
+  let globeClock = 0;
   let routeClock = 0;
   let routeAlpha = getRouteGate(getAnchorFrontness(globeGroup, cities.singapore)).alpha;
   let isReducedMotion = reducedMotion;
@@ -178,7 +179,8 @@ export function createGlobeScene({
         wasReducedMotion = false;
       }
 
-      globeGroup.rotation.y += ROTATION_SPEED * delta;
+      globeClock += delta;
+      globeGroup.rotation.y = getPendulumRotationY(globeClock);
 
       const gate = getRouteGate(getAnchorFrontness(globeGroup, cities.singapore));
       routeAlpha = approachRouteAlpha(routeAlpha, gate.alpha, delta);

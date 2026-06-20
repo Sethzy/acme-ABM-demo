@@ -18,6 +18,8 @@ export type RouteDrawState = {
 const DEG = Math.PI / 180;
 
 export const ROTATION_SPEED = 0.036;
+export const GLOBE_YAW_AMPLITUDE = 0.24;
+export const GLOBE_YAW_FREQUENCY = ROTATION_SPEED / GLOBE_YAW_AMPLITUDE;
 export const SINGAPORE_FRONT_ON = 0.28;
 export const SINGAPORE_FRONT_OFF = 0.08;
 export const ROUTE_FADE_SPEED = 6;
@@ -55,6 +57,10 @@ export function getRouteGate(frontness: number) {
     alpha,
     isOpen: frontness > SINGAPORE_FRONT_OFF,
   };
+}
+
+export function getPendulumRotationY(elapsed: number) {
+  return BASE_GROUP_ROTATION.y + Math.sin(elapsed * GLOBE_YAW_FREQUENCY) * GLOBE_YAW_AMPLITUDE;
 }
 
 export function approachRouteAlpha(current: number, target: number, delta: number) {
