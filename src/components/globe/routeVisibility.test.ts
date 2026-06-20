@@ -5,6 +5,7 @@ import {
   BASE_GROUP_ROTATION,
   GLOBE_YAW_AMPLITUDE,
   GLOBE_YAW_FREQUENCY,
+  ROTATION_SPEED,
   getAnchorFrontness,
   getAnchorViewPosition,
   getPendulumRotationY,
@@ -100,7 +101,8 @@ describe("routeVisibility", () => {
 
     const yawSamples = sampleTimes.map((time) => getPendulumRotationY(time));
 
-    expect(GLOBE_YAW_AMPLITUDE).toBe(0.34);
+    expect(GLOBE_YAW_AMPLITUDE).toBe(0.408);
+    expect(ROTATION_SPEED).toBe(0.0414);
     expect(yawSamples[0]).toBeCloseTo(BASE_GROUP_ROTATION.y, 4);
     expect(Math.max(...yawSamples)).toBeCloseTo(
       BASE_GROUP_ROTATION.y + GLOBE_YAW_AMPLITUDE,

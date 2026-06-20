@@ -17,8 +17,8 @@ export type RouteDrawState = {
 
 const DEG = Math.PI / 180;
 
-export const ROTATION_SPEED = 0.036;
-export const GLOBE_YAW_AMPLITUDE = 0.34;
+export const ROTATION_SPEED = 0.0414;
+export const GLOBE_YAW_AMPLITUDE = 0.408;
 export const GLOBE_YAW_FREQUENCY = ROTATION_SPEED / GLOBE_YAW_AMPLITUDE;
 export const SINGAPORE_FRONT_ON = 0.28;
 export const SINGAPORE_FRONT_OFF = 0.08;
