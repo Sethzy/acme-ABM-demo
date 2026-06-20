@@ -18,16 +18,17 @@ describe("landTexture", () => {
     expect(colors.count).toBe(globeLandDotCount);
   });
 
-  it("uses the original soft limb fade for land dots", () => {
+  it("softens limb dots so darker land does not form a hairy rim", () => {
     expect(getLandDotLimbAlpha(0)).toBe(0);
-    expect(getLandDotLimbAlpha(0.18)).toBeGreaterThan(0);
-    expect(getLandDotLimbAlpha(0.18)).toBeLessThan(1);
+    expect(getLandDotLimbAlpha(0.18)).toBe(0);
     expect(getLandDotLimbAlpha(0.36)).toBeLessThan(1);
-    expect(getLandDotLimbAlpha(0.46)).toBe(1);
+    expect(getLandDotLimbAlpha(0.46)).toBeLessThan(1);
+    expect(getLandDotLimbAlpha(0.58)).toBeLessThan(1);
+    expect(getLandDotLimbAlpha(0.72)).toBe(1);
     expect(getLandDotLimbAlpha(0.8)).toBe(1);
   });
 
-  it("keeps the checkpoint land density with a modest contrast lift", () => {
+  it("keeps the original land dot size without changing shader opacity", () => {
     const material = createLandDotMaterial(720);
 
     expect(LAND_DOT_WORLD_SIZE).toBe(0.0082);
@@ -41,11 +42,11 @@ describe("landTexture", () => {
     const colors = geometry.getAttribute("color");
 
     expect(colors.count).toBeGreaterThan(0);
-    expect(colors.getX(0)).toBeGreaterThan(0.05);
-    expect(colors.getX(0)).toBeLessThan(0.052);
-    expect(colors.getY(0)).toBeGreaterThan(0.25);
-    expect(colors.getY(0)).toBeLessThan(0.258);
-    expect(colors.getZ(0)).toBeGreaterThan(0.29);
-    expect(colors.getZ(0)).toBeLessThan(0.292);
+    expect(colors.getX(0)).toBeGreaterThan(0.007);
+    expect(colors.getX(0)).toBeLessThan(0.008);
+    expect(colors.getY(0)).toBeGreaterThan(0.121);
+    expect(colors.getY(0)).toBeLessThan(0.122);
+    expect(colors.getZ(0)).toBeGreaterThan(0.164);
+    expect(colors.getZ(0)).toBeLessThan(0.165);
   });
 });

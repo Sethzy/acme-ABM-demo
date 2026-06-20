@@ -7,8 +7,8 @@ import {
 const DEG = Math.PI / 180;
 const GLOBE_RADIUS = 1;
 export const LAND_DOT_WORLD_SIZE = 0.0082;
-export const LAND_DOT_LIMB_FADE_START = 0.12;
-export const LAND_DOT_LIMB_FADE_END = 0.46;
+export const LAND_DOT_LIMB_FADE_START = 0.24;
+export const LAND_DOT_LIMB_FADE_END = 0.72;
 
 function smoothstep(edge0: number, edge1: number, value: number) {
   const t = THREE.MathUtils.clamp((value - edge0) / (edge1 - edge0), 0, 1);

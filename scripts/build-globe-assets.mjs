@@ -10,8 +10,8 @@ const DEG = Math.PI / 180;
 const LAND_DOT_RADIUS = 1.0025;
 const LAND_LAT_STEP = 0.78;
 const LAND_LNG_STEP = 0.82;
-const BASE_COLOR = hexToRgb("#0d414a");
-const LIFT_COLOR = hexToRgb("#145d60");
+const BASE_COLOR = hexToRgb("#021f2a");
+const LIFT_COLOR = hexToRgb("#06484f");
 
 const countries = JSON.parse(readFileSync(sourcePath, "utf8"));
 const polygons = normalizeCountries(countries);
@@ -145,13 +145,15 @@ function createLandDotAttributes(polygons) {
   const colors = [];
   let row = 0;
 
-  for (let lat = -83.6; lat <= 83.6; lat += LAND_LAT_STEP) {
-    const cosLat = Math.max(Math.cos(lat * DEG), 0.16);
+  for (let baseLat = -83.6; baseLat <= 83.6; baseLat += LAND_LAT_STEP) {
+    const cosLat = Math.max(Math.cos(baseLat * DEG), 0.16);
     const count = Math.max(20, Math.round((360 / LAND_LNG_STEP) * cosLat));
     const offset = row % 2 === 0 ? 0 : 0.5;
 
     for (let index = 0; index < count; index += 1) {
-      const lng = -180 + ((index + offset) / count) * 360;
+      const baseLng = -180 + ((index + offset) / count) * 360;
+      const lat = getDotJitteredLatitude(baseLat, row, index);
+      const lng = getDotJitteredLongitude(baseLng, count, row, index);
       if (!isLand(lng, lat, polygons)) continue;
 
       positions.push(...latLngToVector(lat, lng, LAND_DOT_RADIUS));
@@ -164,6 +166,20 @@ function createLandDotAttributes(polygons) {
   }
 
   return { positions, colors };
+}
+
+function getDotJitteredLatitude(lat, row, index) {
+  return lat + (hash2d(row, index) - 0.5) * LAND_LAT_STEP * 0.16;
+}
+
+function getDotJitteredLongitude(lng, count, row, index) {
+  const lngStep = 360 / count;
+  return lng + (hash2d(index, row + 17) - 0.5) * lngStep * 0.16;
+}
+
+function hash2d(a, b) {
+  const x = Math.sin(a * 127.1 + b * 311.7) * 43758.5453123;
+  return x - Math.floor(x);
 }
 
 function hexToRgb(hex) {
