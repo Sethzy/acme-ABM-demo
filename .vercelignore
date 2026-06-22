@@ -6,3 +6,10 @@ coverage/
 .vercel.v2.lnk/
 .env*
 public/reference/
+.agents/
+.claude/
+.cursor/
+.gemini/
+.impeccable/
+.kiro/
+.opencode/

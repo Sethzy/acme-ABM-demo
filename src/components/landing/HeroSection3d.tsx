@@ -6,7 +6,7 @@ export function HeroSection3d() {
     <HeroShell variant="globe">
       <div className="hero-globe-scene hero-globe-scene-mobile-tight">
         <div
-          className="hero-globe-frame relative h-[28rem] w-full sm:h-[36rem] lg:h-[40rem] xl:h-[46rem]"
+          className="hero-globe-frame relative h-[26rem] w-full sm:h-[36rem] lg:h-[40rem] xl:h-[46rem]"
           aria-hidden="true"
         >
           <div className="hero-globe-halo" aria-hidden="true" />

@@ -6,6 +6,33 @@ function getRevealDelay(index: number) {
   return { "--reveal-delay": `${(index + 1) * 60}ms` } as CSSProperties;
 }
 
+const recommendedBankRows = [
+  {
+    rank: "01",
+    bank: "DBS",
+    role: "Primary first-bank path",
+    collections: "FAST + PayNow collections",
+    accounts: "Static virtual accounts and named-account mapping",
+    operations: "Hourly and daily statements",
+  },
+  {
+    rank: "02",
+    bank: "UOB",
+    role: "Second launch path",
+    collections: "FAST-in and PayNow QR patterns",
+    accounts: "Named account structures",
+    operations: "Daily statements and reconciliation files",
+  },
+  {
+    rank: "03",
+    bank: "OCBC",
+    role: "Coverage and redundancy",
+    collections: "FAST references and PayNow routing",
+    accounts: "Virtual-account structures",
+    operations: "ICN matching and daily files",
+  },
+];
+
 function SectionIntro({
   title,
   body,
@@ -42,22 +69,71 @@ export function AbmReferenceSections() {
           titleClassName="abm-section-title-compact"
         />
 
-        <div className="abm-card-grid abm-card-grid-3 abm-process-grid mt-[70px]">
-          {process.cards.map((card, index) => (
-            <article
-              key={card.title}
-              className="reveal-stagger-item abm-card abm-card-cell abm-card-with-rule abm-process-card px-9 py-10 sm:px-11 sm:py-11 lg:px-10 xl:px-11"
-              style={getRevealDelay(index)}
-            >
-              <div className="abm-process-meta" aria-hidden="true">
-                <span className="abm-process-index">{card.step}</span>
-                {" "}
-                <span>{card.label}</span>
-              </div>
-              <h3 className="abm-card-title max-w-[15ch]">{card.title}</h3>
-              <p className="abm-card-copy">{card.body}</p>
-            </article>
-          ))}
+        <div className="abm-ledger reveal-stagger-item" style={getRevealDelay(0)}>
+          <div className="abm-ledger-header">
+            <div>
+              <p className="abm-ledger-label">Recommended sequence</p>
+              <h3 className="abm-ledger-title">Top 3 Singapore banks for Revolut</h3>
+              <p className="abm-ledger-subcopy">
+                Acme's recommended first-bank sequence, mapped to the capabilities Revolut can validate for Singapore launch planning.
+              </p>
+            </div>
+          </div>
+
+          <div className="abm-ledger-scroll">
+            <table className="abm-ledger-table">
+              <colgroup>
+                <col className="abm-ledger-col-bank" />
+                <col className="abm-ledger-col-role" />
+                <col className="abm-ledger-col-capability" />
+                <col className="abm-ledger-col-capability" />
+                <col className="abm-ledger-col-capability" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col">Recommended bank</th>
+                  <th scope="col">Launch role</th>
+                  <th scope="col">Collection rails</th>
+                  <th scope="col">Account capability</th>
+                  <th scope="col">Operations feed</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recommendedBankRows.map((row) => (
+                  <tr key={row.bank}>
+                    <td className="abm-ledger-bank">
+                      <span className="abm-ledger-bank-inner">
+                        <span className="abm-ledger-rank">{row.rank}</span>
+                        <span>{row.bank}</span>
+                      </span>
+                    </td>
+                    <td className="abm-ledger-role">{row.role}</td>
+                    <td>{row.collections}</td>
+                    <td>{row.accounts}</td>
+                    <td>{row.operations}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="abm-ledger-rail">
+            {process.cards.map((card, index) => (
+              <article
+                key={card.title}
+                className="abm-ledger-step"
+                style={getRevealDelay(index + 1)}
+              >
+                <div className="abm-ledger-step-label">
+                  {card.step}
+                  {" "}
+                  {card.label}
+                </div>
+                <h4 className="abm-ledger-step-title">{card.title}</h4>
+                <p className="abm-ledger-step-copy">{card.body}</p>
+              </article>
+            ))}
+          </div>
         </div>
       </RevealOnScroll>
 

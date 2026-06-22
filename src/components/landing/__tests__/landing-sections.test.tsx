@@ -19,7 +19,7 @@ describe("LandingPage", () => {
   it("renders the 3D globe hero as the root page", () => {
     render(React.createElement(LandingPage));
 
-    expect(screen.getByRole("heading", { name: /Expand into SEA markets faster with done for you bank connectivity/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Expand into SEA markets faster with implementation-ready bank connectivity/i })).toBeInTheDocument();
     expect(screen.getByText("Proposal for Revolut")).toBeInTheDocument();
     expect(screen.getByText("acme")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Products/i })).not.toBeInTheDocument();
@@ -33,7 +33,7 @@ describe("LandingPage", () => {
     expect(screen.queryByText("API-first")).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Map hero" })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "3D globe" })).not.toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Start from existing SEA bank coverage." })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Recommended starting points for Revolut." })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "What Revolut can launch faster." })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "See the Singapore launch path" })).toBeInTheDocument();
   });
@@ -165,6 +165,86 @@ describe("LandingPage", () => {
     expect(staggerBlock).not.toContain("scale(");
   });
 
+  it("presents the second fold as a bank capability ledger instead of another card grid", () => {
+    render(React.createElement(LandingPage));
+
+    expect(screen.getByText("Top 3 Singapore banks for Revolut")).toBeInTheDocument();
+    expect(screen.getByText("Recommended sequence")).toBeInTheDocument();
+    expect(screen.queryByText("Bank readiness · 8-12 week path")).not.toBeInTheDocument();
+    expect(screen.getByText("DBS")).toBeInTheDocument();
+    expect(screen.getByText("UOB")).toBeInTheDocument();
+    expect(screen.getByText("OCBC")).toBeInTheDocument();
+    expect(screen.queryByText("Global banks")).not.toBeInTheDocument();
+    expect(screen.getByText("Primary first-bank path")).toBeInTheDocument();
+    expect(screen.getByText("FAST + PayNow collections")).toBeInTheDocument();
+    expect(screen.getByText("Static virtual accounts and named-account mapping")).toBeInTheDocument();
+
+    const sections = readFileSync(
+      join(process.cwd(), "src/components/landing/AbmReferenceSections.tsx"),
+      "utf8",
+    );
+    const css = readFileSync(join(process.cwd(), "src/design/landing.css"), "utf8");
+
+    expect(sections).toContain("abm-ledger");
+    expect(sections).toContain("<colgroup>");
+    expect(sections).toContain("abm-ledger-bank-inner");
+    expect(sections).not.toContain("abm-ledger-status");
+    expect(sections).not.toContain("Global banks");
+    expect(sections).not.toContain("abm-card-grid abm-card-grid-3 abm-process-grid");
+    expect(sections).not.toContain("Bank review");
+    expect(sections).not.toContain("Map gaps");
+    expect(sections).not.toContain("VA policy check");
+    expect(sections).not.toContain("In scope");
+    expect(sections).not.toContain("Dependency map");
+    expect(css).toContain("table-layout: fixed;");
+    expect(css).toContain(".abm-ledger-col-bank");
+    expect(css).toContain(".abm-ledger-col-capability");
+    expect(css).toContain(".abm-ledger-bank-inner");
+    expect(css).toContain(".abm-ledger-table th:first-child,");
+    expect(css).toContain("padding-left: 1.75rem;");
+    expect(css).toContain("padding-left: 1.25rem;");
+  });
+
+  it("keeps rendered landing copy client-ready for a Revolut presentation", () => {
+    const { container } = render(React.createElement(LandingPage));
+    const renderedCopy = container.textContent?.toLowerCase() ?? "";
+    const internalPhrases = [
+      "based on our research",
+      "we think",
+      "pressure-test",
+      "prototype",
+      "mock",
+      "restart bank discovery from zero",
+      "usually slow",
+      "where bank policy",
+      "we'll return",
+    ];
+
+    for (const phrase of internalPhrases) {
+      expect(renderedCopy).not.toContain(phrase);
+    }
+  });
+
+  it("brings the globe earlier in the mobile hero viewport", () => {
+    const hero = readFileSync(
+      join(process.cwd(), "src/components/landing/HeroShared.tsx"),
+      "utf8",
+    );
+    const globe = readFileSync(
+      join(process.cwd(), "src/components/landing/HeroSection3d.tsx"),
+      "utf8",
+    );
+    const css = readFileSync(join(process.cwd(), "src/design/landing.css"), "utf8");
+
+    expect(hero).toContain("pt-[88px]");
+    expect(hero).toContain("gap-4");
+    expect(hero).toContain("text-[44px]");
+    expect(hero).toContain("mt-5 max-w-[34rem]");
+    expect(hero).toContain("mt-6 flex flex-wrap");
+    expect(globe).toContain("h-[26rem]");
+    expect(css).toContain(".hero-globe-scene-mobile-tight {\n    min-height: 25rem;");
+  });
+
   it("keeps hero CTAs tactile while preserving clean focus", () => {
     const primitives = readFileSync(
       join(process.cwd(), "src/components/landing/VisualPrimitives.tsx"),
@@ -190,9 +270,9 @@ describe("LandingPage", () => {
 
     const sectionHeading = screen.getByRole("heading", { name: "What Revolut can launch faster." });
     const sectionCopy = screen.getByText(
-      "Based on our research, these are the Singapore workflows we think Revolut should pressure-test first, then map bank by bank against the partners you want live.",
+      "These are the Singapore workflows Revolut can sequence first, then map bank by bank against the partners and rails selected for go-live.",
     );
-    const cardCopy = screen.getByText(/For Revolut Business, prioritize static VA setups/i);
+    const cardCopy = screen.getByText(/For Revolut Business, prioritize static virtual-account setups/i);
 
     expect(sectionHeading).toHaveClass("abm-section-title");
     expect(sectionHeading.className).not.toContain("text-[96px]");
@@ -214,17 +294,13 @@ describe("LandingPage", () => {
     render(React.createElement(LandingPage));
 
     const coverageSection = screen
-      .getByRole("heading", { name: "Start from existing SEA bank coverage." })
+      .getByRole("heading", { name: "Recommended starting points for Revolut." })
       .closest("section");
-    const processCard = screen
-      .getByRole("heading", { name: "Existing local bank coverage" })
-      .closest("article");
     const shipCard = screen.getByRole("heading", { name: "Named virtual accounts" }).closest("article");
     const form = screen.getByRole("button", { name: "Request Singapore coverage review" }).closest("form");
 
     expect(coverageSection).toHaveClass("pt-[64px]");
     expect(coverageSection?.className).not.toContain("pt-[116px]");
-    expect(processCard).toHaveClass("px-9", "py-10");
     expect(shipCard).toHaveClass("px-9", "py-10");
     expect(form).toHaveClass("px-9", "py-10");
     expect(form?.className).not.toContain("px-4");

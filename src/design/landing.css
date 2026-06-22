@@ -263,6 +263,168 @@
   min-height: 16.75rem;
 }
 
+.abm-ledger {
+  margin-top: 4rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-border) 72%, color-mix(in srgb, var(--color-revolut-blue) 18%, transparent));
+  background: color-mix(in srgb, var(--color-surface-raised) 96%, var(--color-surface));
+}
+
+.abm-ledger-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+}
+
+.abm-ledger-label,
+.abm-ledger-step-label {
+  color: color-mix(in srgb, var(--color-revolut-blue) 72%, var(--color-ink-muted));
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.abm-ledger-title {
+  margin-top: 0.65rem;
+  color: var(--color-ink);
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+  font-weight: 550;
+  letter-spacing: 0;
+  line-height: 1.12;
+}
+
+.abm-ledger-subcopy {
+  margin-top: 0.7rem;
+  max-width: 42rem;
+  color: color-mix(in srgb, var(--color-ink) 58%, var(--color-ink-muted));
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.abm-ledger-scroll {
+  overflow-x: auto;
+}
+
+.abm-ledger-table {
+  width: 100%;
+  min-width: 960px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.abm-ledger-col-bank {
+  width: 15%;
+}
+
+.abm-ledger-col-role {
+  width: 19%;
+}
+
+.abm-ledger-col-capability {
+  width: 22%;
+}
+
+.abm-ledger-table th,
+.abm-ledger-table td {
+  padding: 1.05rem 1.1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 58%, transparent);
+  text-align: left;
+  vertical-align: top;
+}
+
+.abm-ledger-table th:first-child,
+.abm-ledger-table td:first-child {
+  padding-left: 1.75rem;
+}
+
+.abm-ledger-table th:last-child,
+.abm-ledger-table td:last-child {
+  padding-right: 1.75rem;
+}
+
+.abm-ledger-table th {
+  color: color-mix(in srgb, var(--color-ink) 48%, var(--color-ink-muted));
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.abm-ledger-table td {
+  color: color-mix(in srgb, var(--color-ink) 68%, var(--color-ink-muted));
+  font-size: 0.92rem;
+  font-weight: 450;
+  line-height: 1.35;
+}
+
+.abm-ledger-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.abm-ledger-bank {
+  color: var(--color-ink) !important;
+  font-weight: 650 !important;
+}
+
+.abm-ledger-bank-inner {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.7rem;
+}
+
+.abm-ledger-rank {
+  color: color-mix(in srgb, var(--color-revolut-blue) 68%, var(--color-ink-muted));
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.abm-ledger-role {
+  color: color-mix(in srgb, var(--color-ink) 78%, var(--color-revolut-blue-dark)) !important;
+  font-weight: 560 !important;
+}
+
+.abm-ledger-rail {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+}
+
+.abm-ledger-step {
+  padding: 1.35rem 1.5rem 1.5rem;
+  border-right: 1px solid color-mix(in srgb, var(--color-border) 62%, transparent);
+}
+
+.abm-ledger-step:last-child {
+  border-right: 0;
+}
+
+.abm-ledger-step-title {
+  margin-top: 0.9rem;
+  color: var(--color-ink);
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.abm-ledger-step-copy {
+  margin-top: 0.7rem;
+  color: color-mix(in srgb, var(--color-ink) 60%, var(--color-ink-muted));
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
 .abm-process-card:hover,
 .abm-card-cell:hover {
   background: color-mix(in srgb, var(--color-surface-raised) 100%, var(--color-surface));
@@ -393,6 +555,40 @@
 
   .hero-globe-scene-mobile-tight {
     min-height: 25rem;
+    margin-top: -1.5rem;
+  }
+
+  .abm-ledger {
+    margin-top: 3rem;
+  }
+
+  .abm-ledger-header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 1.25rem;
+  }
+
+  .abm-ledger-table th:first-child,
+  .abm-ledger-table td:first-child {
+    padding-left: 1.25rem;
+  }
+
+  .abm-ledger-table th:last-child,
+  .abm-ledger-table td:last-child {
+    padding-right: 1.25rem;
+  }
+
+  .abm-ledger-rail {
+    grid-template-columns: 1fr;
+  }
+
+  .abm-ledger-step {
+    border-right: 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-border) 62%, transparent);
+  }
+
+  .abm-ledger-step:last-child {
+    border-bottom: 0;
   }
 }
 

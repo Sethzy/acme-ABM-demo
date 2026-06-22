@@ -5,7 +5,20 @@ import tseslint from "typescript-eslint";
 
 export default [
   {
-    ignores: [".next/**", "node_modules/**", "coverage/**", "dist/**", "next-env.d.ts"],
+    ignores: [
+      ".agents/**",
+      ".claude/**",
+      ".cursor/**",
+      ".gemini/**",
+      ".impeccable/**",
+      ".kiro/**",
+      ".next/**",
+      ".opencode/**",
+      "coverage/**",
+      "dist/**",
+      "next-env.d.ts",
+      "node_modules/**",
+    ],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
